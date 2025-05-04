@@ -2,7 +2,16 @@
   --color-primary: #493628;
   --color-secondary: #ab886d;
   --color-background: #e4e0e1;
+  --color-bottom: #ccc9c9;
   --color-tertiary: #d6c0b3;
+
+  --color-primary-translucent: #493628de;
+  --color-secondary-translucent: #ab886dde;
+  --color-background-translucent: #e4e0e1de;
+  --color-bottom-translucent: #ccc9c9de;
+  --color-tertiary-translucent: #d6c0b3de;
+
+  --blur-radius: 16px;
 }
 
 html {
@@ -14,15 +23,27 @@ html {
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 
-  background-color: var(--color-background);
+  background-color: var(--color-bottom);
+  display: flex;
+  flex-direction: column;
 }
 
 header {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-translucent);
+  backdrop-filter: blur(var(--blur-radius));
   color: var(--color-background);
   display: flex;
   flex-direction: column;
+  flex: 1;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  box-shadow: 0px 0px 0.5em var(--color-primary);
 
   .top {
     padding: 1em;
@@ -37,7 +58,8 @@ header {
 
   .icon-btn {
     img {
-        width: 75%;
+      width: 2em;
+      height: 2em;
     }
   }
 
@@ -46,14 +68,19 @@ header {
   }
 }
 
-.icon-btn {
+main {
+  flex: 1000;
+  height: min-content;
+}
 
-  background: none;
+.icon-btn {
   border: none;
   color: var(--color-background);
   font-size: 1em;
   cursor: pointer;
   transition: filter 0.2s ease-in-out;
+  padding: .5em;
+  padding-bottom: .25em;
 
   &:hover {
     filter: brightness(0.8);
@@ -61,6 +88,15 @@ header {
 
   &:active {
     filter: brightness(0.6);
+  }
+
+
+  &>img {
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0;
+    margin: 0;
+    aspect-ratio: 1/1;
   }
 }
 
@@ -70,8 +106,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-primary);
-  color: var(--color-background);
+
   gap: 0.5em;
 
   > * {
@@ -89,13 +124,21 @@ header {
   font-size: 1em;
   font-weight: bolder;
   gap: 1em;
-  color: var(--color-primary);
-  background-color: var(--color-secondary);
-  border-radius: 0.5em;
 
+  border-radius: 0.5em;
   border-bottom: 0.2em solid transparent;
+  border: 0.2em solid var(--color-secondary);
 
   transition: filter 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+
+  color: var(--color-secondary);
+  background-color: transparent;
+
+  cursor: pointer;
+
+  & > img {
+    transition: filter 0.2s ease-in-out;
+  }
 
   &:hover {
     filter: brightness(0.8);
@@ -112,6 +155,13 @@ header {
   &:active,
   &.active {
     border-bottom: 0.2em solid var(--color-tertiary);
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+  }
+
+  &:not(.active) > img {
+    filter: brightness(0) saturate(100%) invert(61%) sepia(28%) saturate(455%)
+      hue-rotate(344deg) brightness(88%) contrast(83%) !important;
   }
 }
 
@@ -126,71 +176,295 @@ header {
   aspect-ratio: 1/1;
 }
 
-.menu-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.5em;
-    padding: 0.5em;
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+  gap: 0.5em;
+  padding: 0.5em;
 }
 
 .menu-item {
-    background-color: var(--color-tertiary);
-    color: var(--color-primary);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border: 0.1em solid var(--color-tertiary);
+  box-shadow: #000000 0px 0px 0.2em;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1em;
+  font-weight: bolder;
+  gap: 0.5em;
+
+  transition: filter 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  &:active {
+    filter: brightness(0.6);
+  }
+
+  img {
+    width: 10em;
     border-radius: 0.5em;
-    padding: 0.5em;
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background-color: #49362836;
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-card {
+  position: fixed;
+
+  z-index: 9999999;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em;
+
+  & > .title {
+    margin: 0;
+    padding: 0;
+  }
+
+  & > img {
+    width: 10em;
+    height: 10em;
+    border-radius: 0.5em;
+  }
+
+  & .buttons {
+    font-size: .9em;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    text-align: center;
-    font-size: 1em;
-    font-weight: bolder;
     gap: 0.5em;
+    width: 100%;
 
-    transition: filter 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+    &>*{
+      flex: 1;
+    }
+  }
+}
 
-    &:hover {
-      filter: brightness(0.8);
+.customizations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 100%;
+  height: 100%;
+}
+
+.customization {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  padding: 1em;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+
+  &:first-child {
+    font-weight: bold !important;
+  }
+
+  &.quantity {
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
-    &:active {
-      filter: brightness(0.6);
+    &>.quantity-control{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5em;
+      padding: 0.5em;
+      width: 100%;
     }
+  }
+}
 
-    img {
-        width: 10em;
-        border-radius: .5em;
-    }
 
-    h2,p {
-        margin: 0;
-    }
+button {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: none;
+  padding: 0.5em;
+  border-radius: 1em;
+  font-size: 1em;
+  font-weight: bolder;
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  &:active {
+    filter: brightness(0.6);
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+  }
+
+  &.tertiary {
+    background-color: var(--color-tertiary);
+    color: var(--color-background);
+  }
+
+  &.empty {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 0.15em solid var(--color-secondary);
+  }
+
+  &.background {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    box-shadow:inset 0px 0px 0px .15em var(--color-secondary);
+  }
+
+  &.transparent {
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+}
+
+button.icon-btn-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+  padding: 1em;
+  & > img {
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0;
+    margin: 0;
+    aspect-ratio: 1/1;
+  }
+  &>p{
+    margin: 0;
+  }
+}
+
+input {
+  background-color: white;
+  color: var(--color-primary);
+  border: 0.1em solid var(--color-tertiary);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 1em;
+  font-weight: bolder;
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  &:active {
+    filter: brightness(0.6);
+  }
+}
+
+select {
+  background-color: white;
+  color: var(--color-primary);
+  border: 0.1em solid var(--color-tertiary);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 1em;
+  font-weight: bolder;
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  &:active {
+    filter: brightness(0.6);
+  }
 }
 
 .filter-primary {
+  user-select: none;
+  -webkit-user-drag: none;
   filter: brightness(0) saturate(100%) invert(17%) sepia(6%) saturate(3701%)
     hue-rotate(342deg) brightness(97%) contrast(82%);
 }
 
 .filter-secondary {
+  user-select: none;
+  -webkit-user-drag: none;
   filter: brightness(0) saturate(100%) invert(61%) sepia(28%) saturate(455%)
     hue-rotate(344deg) brightness(88%) contrast(83%);
 }
 
 .filter-tertiary {
+  user-select: none;
+  -webkit-user-drag: none;
   filter: brightness(0) saturate(100%) invert(89%) sepia(24%) saturate(343%)
     hue-rotate(322deg) brightness(91%) contrast(82%);
 }
 
 .filter-background {
+  user-select: none;
+  -webkit-user-drag: none;
   filter: brightness(0) saturate(100%) invert(82%) sepia(3%) saturate(151%)
     hue-rotate(148deg) brightness(111%) contrast(91%);
 }
 
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.disabled {
+  display: none;
+}
+
+.hidden {
+  visibility: hidden;
+}
 
 /*
 * {
-  outline: 2px dashed yellow;
+  outline: 1px dashed yellow;
 }
-
 */
