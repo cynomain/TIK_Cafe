@@ -9,17 +9,14 @@
   <body>
     <header>
       <div class="top">
-        <h1 class="title">Cafe</h1>
+        <div class="title">
+          <h1 class="title">Cafe</h1>
+          <h3>Devon Reinhart</h3>
+        </div>
         <div class="buttons">
           <button class="icon-btn transparent">
             <img
               src="assets/icons/checkout/cart.svg"
-              class="filter-background"
-            />
-          </button>
-          <button class="icon-btn transparent">
-            <img
-              src="assets/icons/generic/settings.svg"
               class="filter-background"
             />
           </button>
@@ -28,21 +25,15 @@
       <div class="bottom">
         <div class="tabs">
           <button class="tab active">
-            <img
-              src="assets/icons/menu/coffee.svg"
-              class="icon filter-primary"
-            />
+            <img src="assets/icons/menu/coffee.svg" class="icon" />
             <p>Kopi</p>
           </button>
           <button class="tab">
-            <img src="assets/icons/menu/tea.svg" class="icon filter-primary" />
+            <img src="assets/icons/menu/tea.svg" class="icon" />
             <p>Non-Kopi</p>
           </button>
           <button class="tab">
-            <img
-              src="assets/icons/menu/bakery.svg"
-              class="icon filter-primary"
-            />
+            <img src="assets/icons/menu/bakery.svg" class="icon" />
             <p>Makanan</p>
           </button>
         </div>
@@ -141,7 +132,7 @@
       </div>
     </main>
 
-    <div class="overlay disabled">
+    <div class="overlay">
       <div class="dialog-card">
         <h2 class="title">Ballerina Cappucina</h2>
         <img src="assets/menu/kopi/ballerina.png" />
@@ -151,31 +142,31 @@
         </p>
         <div class="customizations">
           <div class="customization selection">
-            <label for="milk">Milk</label>
+            <label for="milk">Susu (wajib, pilih salah satu)</label>
             <div class="selection-options">
-              <button class="option active empty">Full Cream</button>
+              <button class="option active">Full Cream</button>
               <button class="option">Low Fat</button>
               <button class="option">Soy</button>
             </div>
           </div>
-        </div>
 
-        <div class="customization quantity center">
-          <label for="quantity">Jumlah</label>
-          <div class="quantity-control">
-            <button type="button" class="icon-btn">
-              <img src="assets/icons/generic/remove.svg" />
-            </button>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              min="1"
-              value="1"
-            />
-            <button type="button" class="icon-btn">
-              <img src="assets/icons/generic/add.svg" />
-            </button>
+          <div class="customization quantity center col">
+            <label for="quantity">Jumlah</label>
+            <div class="quantity-control center row">
+              <button type="button" class="icon-btn">
+                <img src="assets/icons/generic/remove.svg" />
+              </button>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="1"
+                value="1"
+              />
+              <button type="button" class="icon-btn">
+                <img src="assets/icons/generic/add.svg" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -191,7 +182,7 @@
               src="assets/icons/checkout/cart_add.svg"
               class="filter-background"
             />
-            <p>Tambah ke Keranjang</p>
+            <p>Tambah</p>
           </button>
         </div>
       </div>

@@ -63,8 +63,24 @@ header {
     }
   }
 
-  .title {
+  .title,
+  h1,
+  h2,
+  h3 {
     margin: 0;
+    padding: 0;
+  }
+
+  .title {
+    font-size: 1em;
+  }
+
+  h1 {
+    font-size: 1.5em !important;
+  }
+
+  h3 {
+    font-size: 0.8em !important;
   }
 }
 
@@ -79,8 +95,8 @@ main {
   font-size: 1em;
   cursor: pointer;
   transition: filter 0.2s ease-in-out;
-  padding: .5em;
-  padding-bottom: .25em;
+  padding: 0.5em;
+  padding-bottom: 0.25em;
 
   &:hover {
     filter: brightness(0.8);
@@ -90,8 +106,7 @@ main {
     filter: brightness(0.6);
   }
 
-
-  &>img {
+  & > img {
     width: 1.5em;
     height: 1.5em;
     padding: 0;
@@ -107,7 +122,7 @@ main {
   justify-content: space-between;
   align-items: center;
 
-  gap: 0.5em;
+  gap: 0.1em;
 
   > * {
     flex: 1;
@@ -126,7 +141,6 @@ main {
   gap: 1em;
 
   border-radius: 0.5em;
-  border-bottom: 0.2em solid transparent;
   border: 0.2em solid var(--color-secondary);
 
   transition: filter 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
@@ -144,22 +158,22 @@ main {
     filter: brightness(0.8);
   }
 
-  &:hover:not(:active) {
-    border-bottom: 0.2em solid var(--color-tertiary);
-  }
-
   &:active {
     filter: brightness(0.6);
   }
 
   &:active,
   &.active {
-    border-bottom: 0.2em solid var(--color-tertiary);
     color: var(--color-primary);
     background-color: var(--color-secondary);
+
+    & > img {
+      filter: brightness(0) saturate(100%) invert(17%) sepia(6%) saturate(3701%)
+        hue-rotate(342deg) brightness(97%) contrast(82%);
+    }
   }
 
-  &:not(.active) > img {
+  &:not(.active):not(:active) > img {
     filter: brightness(0) saturate(100%) invert(61%) sepia(28%) saturate(455%)
       hue-rotate(344deg) brightness(88%) contrast(83%) !important;
   }
@@ -199,7 +213,9 @@ main {
   font-weight: bolder;
   gap: 0.5em;
 
-  transition: filter 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+  transition: filter 0.2s ease-in-out;
+
+  user-select: none;
 
   cursor: pointer;
 
@@ -244,12 +260,18 @@ main {
   backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   gap: 0.25em;
   border-radius: 1em;
   padding: 1em;
   margin: 1em;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  max-width: 80dvw;
+  max-height: 80dvh;
 
   & > .title {
     margin: 0;
@@ -263,23 +285,24 @@ main {
   }
 
   & .buttons {
-    font-size: .9em;
+    font-size: 0.9em;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0.5em;
     width: 100%;
 
-    &>*{
+    & > * {
       flex: 1;
     }
   }
+
 }
 
 .customizations {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 2em;
   width: 100%;
   height: 100%;
 }
@@ -288,10 +311,13 @@ main {
   display: flex;
   flex-direction: row;
   gap: 0.5em;
-  padding: 1em;
   width: 100%;
   height: 100%;
   align-items: center;
+
+  label {
+    font-weight: bold;
+  }
 
   &:first-child {
     font-weight: bold !important;
@@ -304,17 +330,42 @@ main {
       margin: 0;
     }
 
-    &>.quantity-control{
+    & > .quantity-control {
       display: flex;
       flex-direction: row;
       align-items: center;
+      gap: .1em;
+      margin-right: -.1em;
+      margin-left: -.1em;
+      &>button {
+        padding: .4em;
+        padding-bottom: .2em;
+      }
+    }
+  }
+
+  &.selection {
+    display: block;
+
+    & > .selection-options {
+      display: flex;
+      flex-direction: column;
       gap: 0.5em;
-      padding: 0.5em;
-      width: 100%;
+
+      & > .option {
+        background-color: var(--color-background);
+        color: var(--color-primary);
+        box-shadow: inset 0px 0px 0px 0.15em var(--color-secondary);
+      }
+
+      & > .option.active {
+        background-color: var(--color-primary) !important;
+        color: var(--color-background) !important;
+        box-shadow: none;
+      }
     }
   }
 }
-
 
 button {
   background-color: var(--color-primary);
@@ -354,7 +405,7 @@ button {
   &.background {
     background-color: var(--color-background);
     color: var(--color-primary);
-    box-shadow:inset 0px 0px 0px .15em var(--color-secondary);
+    box-shadow: inset 0px 0px 0px 0.15em var(--color-secondary);
   }
 
   &.transparent {
@@ -377,7 +428,7 @@ button.icon-btn-label {
     margin: 0;
     aspect-ratio: 1/1;
   }
-  &>p{
+  & > p {
     margin: 0;
   }
 }
@@ -451,8 +502,17 @@ select {
 }
 
 .center {
+  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
 }
 
 .disabled {
@@ -463,8 +523,6 @@ select {
   visibility: hidden;
 }
 
-/*
 * {
   outline: 1px dashed yellow;
 }
-*/
