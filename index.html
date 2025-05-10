@@ -134,50 +134,42 @@
 
     <div class="overlay">
       <div class="dialog-card">
-        <h2 class="title">Ballerina Cappucina</h2>
-        <img src="assets/menu/kopi/ballerina.png" />
-        <p class="description">
+        <h2 class="title" id="mdialog-title">Ballerina Cappucina</h2>
+        <img id="mdialog-img" src="assets/menu/kopi/ballerina.png" />
+        <p class="description" id="mdialog-description">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
           voluptatibus.
         </p>
-        <div class="customizations">
-          <div class="customization selection">
-            <label for="milk">Susu (wajib, pilih salah satu)</label>
-            <div class="selection-options">
-              <button class="option active">Full Cream</button>
-              <button class="option">Low Fat</button>
-              <button class="option">Soy</button>
-            </div>
-          </div>
+        <div class="customizations" id="mdialog-customizations">
 
-          <div class="customization quantity center col">
-            <label for="quantity">Jumlah</label>
-            <div class="quantity-control center row">
-              <button type="button" class="icon-btn">
-                <img src="assets/icons/generic/remove.svg" />
-              </button>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                min="1"
-                value="1"
-              />
-              <button type="button" class="icon-btn">
-                <img src="assets/icons/generic/add.svg" />
-              </button>
-            </div>
-          </div>
         </div>
 
-        <p class="price">Rp 10.000</p>
+        <div class="customization quantity center col" id="mdialog-quantity">
+          <p>Jumlah</p>
+          <div class="quantity-control center row">
+            <button type="button" class="icon-btn" id="mdialog-q-btn-reduce">
+              <img src="assets/icons/generic/remove.svg" />
+            </button>
+            <input
+              type="number"
+              id="mdialog-q-quantity"
+              name="quantity"
+              min="1"
+              value="1"
+            />
+            <button type="button" class="icon-btn" id="mdialog-q-btn-increase">
+              <img src="assets/icons/generic/add.svg" />
+            </button>
+          </div>
+        </div>
+        <p class="price" id="mdialog-price">Rp 10.000</p>
 
         <div class="buttons">
-          <button class="icon-btn-label secondary">
+          <button id="mdialog-btn-cancel" class="icon-btn-label secondary">
             <img src="assets/icons/generic/close.svg" class="filter-primary" />
             <p>Batal</p>
           </button>
-          <button class="icon-btn-label">
+          <button id="mdialog-btn-add-to-cart" class="icon-btn-label">
             <img
               src="assets/icons/checkout/cart_add.svg"
               class="filter-background"
@@ -188,6 +180,10 @@
       </div>
     </div>
 
+    <script src="helper.js"></script>
+    <script src="data.js"></script>
+    <script src="menu.js"></script>
+    <script src="cart.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

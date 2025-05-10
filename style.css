@@ -99,11 +99,11 @@ main {
   padding-bottom: 0.25em;
 
   &:hover {
-    filter: brightness(0.8);
+    filter: brightness(0.9);
   }
 
   &:active {
-    filter: brightness(0.6);
+    filter: brightness(0.8);
   }
 
   & > img {
@@ -297,6 +297,28 @@ main {
     }
   }
 
+  /* Custom scrollbar for dialog-card */
+  &::-webkit-scrollbar {
+    width: 1em;
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-primary-translucent);
+    border-radius: 1em;
+    min-height: 2em;
+    border: 0.2em solid transparent;
+    background-clip: padding-box;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 1em;
+  }
+
+  /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-primary-translucent) transparent;
 }
 
 .customizations {
@@ -315,8 +337,9 @@ main {
   height: 100%;
   align-items: center;
 
-  label {
+  p {
     font-weight: bold;
+    margin: 0.5em;
   }
 
   &:first-child {
@@ -334,13 +357,15 @@ main {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: .1em;
-      margin-right: -.1em;
-      margin-left: -.1em;
-      &>button {
-        padding: .4em;
-        padding-bottom: .2em;
+      gap: 0.1em;
+      margin-right: -0.1em;
+      margin-left: -0.1em;
+      & > button {
+        padding: 0.4em;
+        padding-bottom: 0.2em;
       }
+      -webkit-user-drag: none;
+      user-select: none;
     }
   }
 
@@ -356,14 +381,95 @@ main {
         background-color: var(--color-background);
         color: var(--color-primary);
         box-shadow: inset 0px 0px 0px 0.15em var(--color-secondary);
+
+        gap: 0.5em;
+
+        & > img {
+          user-select: none;
+          -webkit-user-drag: none;
+          filter: brightness(0) saturate(100%) invert(17%) sepia(6%)
+            saturate(3701%) hue-rotate(342deg) brightness(97%) contrast(82%);
+        }
+
+        & > *:first-child {
+          flex: 1;
+        }
+
+        & > *:nth-child(2) {
+          flex-grow: 100;
+          text-align: start;
+        }
+        & > *:last-child {
+          flex: 1;
+          text-align: end;
+        }
       }
 
       & > .option.active {
         background-color: var(--color-primary) !important;
         color: var(--color-background) !important;
         box-shadow: none;
+
+        & > img {
+          user-select: none;
+          -webkit-user-drag: none;
+          filter: brightness(0) saturate(100%) invert(82%) sepia(3%)
+            saturate(151%) hue-rotate(148deg) brightness(111%) contrast(91%);
+        }
       }
     }
+  }
+}
+
+.flash-red {
+  animation: flash-red 0.5s ease-in-out;
+  transform-origin: left;
+}
+@keyframes flash-red {
+  0% {
+    color: var(--color-primary);
+    scale: 1;
+  }
+  50% {
+    color: #ff0000;
+    scale: 1.05;
+  }
+  75% {
+    color: #ff0000;
+    scale: 1.05;
+  }
+  100% {
+    color: var(--color-primary);
+    scale: 1;
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-0.25em);
+  }
+  30% {
+    transform: translateX(0.25em);
+  }
+  45% {
+    transform: translateX(-0.25em);
+  }
+  60% {
+    transform: translateX(0.25em);
+  }
+  75% {
+    transform: translateX(-0.25em);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
@@ -376,14 +482,17 @@ button {
   font-size: 1em;
   font-weight: bolder;
   cursor: pointer;
-  transition: filter 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  transition: filter 0.2s ease-in-out, background-color 0.2s ease-in-out,
+    scale 0.1s ease-in-out;
 
   &:hover {
-    filter: brightness(0.8);
+    filter: brightness(0.9);
+    scale: 1.005;
   }
 
   &:active {
-    filter: brightness(0.6);
+    filter: brightness(0.8);
+    scale: 0.995;
   }
 
   &.secondary {
@@ -523,6 +632,8 @@ select {
   visibility: hidden;
 }
 
+/*
 * {
   outline: 1px dashed yellow;
 }
+*/

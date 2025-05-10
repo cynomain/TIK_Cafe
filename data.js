@@ -1,3 +1,110 @@
+class MenuCategory {
+    /**
+     * @param {string} name - The name of the menu category.
+     * @param {MenuItem[]} items - The items in the menu category.
+     * @param {string} icon_path - The path to the icon for the menu category.
+     */
+    constructor(name, items, icon_path) {
+        this.name = name;
+        this.items = items;
+        this.icon_path = icon_path;
+    }
+}
+
+class MenuItem {
+    /**
+     * @param {string} name - The name of the menu item.
+     * @param {int} price - The price of the menu item.
+     * @param {string} description - The description of the menu item.
+     * @param {Customization[]} customizations - The available customizations for the menu item.
+     * @param {string} icon_path - The path to the icon for the menu item.
+     * @param {string} id - The unique identifier for the menu item.
+     */
+    constructor(name, price, description, customizations, icon_path, id) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.customizations = customizations;
+        this.icon_path = icon_path;
+        this.id = id;
+    }
+
+    isFree() {
+        return this.price == 0;
+    }
+}
+
+class Customization {
+    /**
+     * @param {string} name - The name of the customization.
+     * @param {Choice[]} choices - The available choices for the customization.
+     * @param {string} id - The unique identifier for the customization.
+     * @param {int} max_choices - The maximum number of choices that can be selected.
+     * @param {int} min_choices - The minimum number of choices that must be selected.
+     */
+    constructor(name, choices, id, max_choices = 1, min_choices = 1) {
+        this.name = name;
+        this.choices = choices;
+        this.max_choices = max_choices;
+        this.min_choices = min_choices;
+        this.id = id;
+    }
+
+    isRequired() {
+        return this.min_choices > 0;
+    }
+
+    isSingle() {
+        return this.max_choices == 1;
+    }
+}
+
+class Choice {
+    /**
+     * @param {string} name - The name of the choice.
+     * @param {int} price - The price of the choice.
+    * @param {string} id - The unique identifier for the choice. 
+    */
+    constructor(name, price, id) {
+        this.name = name;
+        this.price = price;
+        this.id = id;
+    }
+
+    isFree() {
+        return this.price == 0;
+    }
+}
+
+class Discount {
+
+    /**
+     * 
+     * @param {string} name 
+     * @param {string} description
+     * @param {string} longDescription
+     * @param {Function} condition 
+     */
+    constructor(name, description, longDescription, condition) {
+        this.name = name;
+        this.description = description;
+        this.longDescription = longDescription;
+        this.condition = condition;
+    }
+}
+
+class DiscountedItem {
+    /**
+     * @param {string} itemId - The item id to be discounted.   
+     * @param {number} discountGetter - The discount percentage.
+     */
+    constructor(itemId, discountGetter) {
+        this.itemId = itemId;
+        this.discount = discountGetter;
+    }
+}
+
+
 const CUSTOMIZATION_SUGAR = new Customization(
     "Gula",
     [
@@ -7,8 +114,9 @@ const CUSTOMIZATION_SUGAR = new Customization(
         new Choice("Less Sugar (75%)", 0, "sugar_75"),
         new Choice("Normal Sugar (100%)", 0, "sugar_100"),
         new Choice("Extra Sugar (125%)", 0, "sugar_125"),
-    ]
-)
+    ],
+    "customization_sugar"
+);
 
 const CUSTOMIZATION_ICE = new Customization(
     "Es",
@@ -18,8 +126,9 @@ const CUSTOMIZATION_ICE = new Customization(
         new Choice("Less Ice", 0, "ice_less"),
         new Choice("Normal Ice", 0, "ice_normal"),
         new Choice("Extra Ice", 0, "ice_extra"),
-    ]
-)
+    ],
+    "customization_ice"
+);
 
 const CUSTOMIZATION_SIZE = new Customization(
     "Ukuran",
@@ -27,8 +136,9 @@ const CUSTOMIZATION_SIZE = new Customization(
         new Choice("Small", 0, "size_small"),
         new Choice("Medium", 0, "size_medium"),
         new Choice("Large", 0, "size_large"),
-    ]
-)
+    ],
+    "customization_size"
+);
 
 const CUSTOMIZATION_TOPPINGS = new Customization(
     "Topping",
@@ -43,9 +153,10 @@ const CUSTOMIZATION_TOPPINGS = new Customization(
         new Choice("Espresso Shot", 5000, "topping_espressoshot"),
         new Choice("Ice Cream", 6000, "topping_icecream"),
     ],
-    max_choices = 3,
-    min_choices = 0
-)
+    "customization_toppings",
+    5,
+    0
+);
 
 const CUSTOMIZATION_MILK = new Customization(
     "Susu",
@@ -56,8 +167,9 @@ const CUSTOMIZATION_MILK = new Customization(
         new Choice("Almond Milk", 6000, "milk_almond"),
         new Choice("Soy Milk", 5000, "milk_soy"),
         new Choice("Oat Milk", 5000, "milk_oat"),
-    ]
-)
+    ],
+    "customization_milk"
+);
 
 const CATEGORY_COFFEE = new MenuCategory(
     "Kopi",
@@ -400,115 +512,8 @@ const CATEGORIES = [
     CATEGORY_FOOD
 ]
 
-class MenuCategory {
-    /**
-     * @param {string} name - The name of the menu category.
-     * @param {MenuItem[]} items - The items in the menu category.
-     * @param {string} icon_path - The path to the icon for the menu category.
-     */
-    constructor(name, items, icon_path) {
-        this.name = name;
-        this.items = items;
-        this.icon_path = icon_path;
-    }
+
+function FetchCategories() {
+    // Jika ada API, pake API.
+    return Promise.resolve(CATEGORIES);
 }
-
-class MenuItem {
-    /**
-     * @param {string} name - The name of the menu item.
-     * @param {int} price - The price of the menu item.
-     * @param {string} description - The description of the menu item.
-     * @param {Customization[]} customizations - The available customizations for the menu item.
-     * @param {string} icon_path - The path to the icon for the menu item.
-     * @param {string} id - The unique identifier for the menu item.
-     */
-    constructor(name, price, description, customizations, icon_path, id) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.customizations = customizations;
-        this.icon_path = icon_path;
-        this.id = id;
-    }
-
-    isFree() {
-        return this.price == 0;
-    }
-}
-
-class Customization {
-    /**
-     * @param {string} name - The name of the customization.
-     * @param {Choice[]} choices - The available choices for the customization.
-     * @param {int} max_choices - The maximum number of choices that can be selected.
-     * @param {int} min_choices - The minimum number of choices that must be selected.
-     */
-    constructor(name, choices, max_choices = 1, min_choices = 1) {
-        this.name = name;
-        this.choices = choices;
-        this.max_choices = max_choices;
-        this.min_choices = min_choices;
-    }
-
-    isRequired() {
-        return this.min_choices > 0;
-    }
-
-    isSingle() {
-        return this.max_choices == 1;
-    }
-}
-
-class Choice {
-    /**
-     * @param {string} name - The name of the choice.
-     * @param {int} price - The price of the choice.
-    * @param {string} id - The unique identifier for the choice. 
-    */
-    constructor(name, price, id) {
-        this.name = name;
-        this.price = price;
-        this.id = id;
-    }
-
-    isFree() {
-        return this.price == 0;
-    }
-}
-
-class Discount {
-
-    /**
-     * 
-     * @param {string} name 
-     * @param {string} description
-     * @param {string} longDescription
-     * @param {Function} condition 
-     */
-    constructor(name, description, longDescription, condition) {
-        this.name = name;
-        this.description = description;
-        this.longDescription = longDescription;
-        this.condition = condition;
-    }
-}
-
-class DiscountedItem {
-    /**
-     * @param {string} itemId - The item id to be discounted.
-     * @param {number} discount - The discount percentage.
-     */
-    constructor(itemId, discount) {
-        this.item = item;
-        this.discount = discount;
-    }
-}
-
-const EXAMPLE_DISCOUNT = new Discount("Exmaple Discount", "Example discount", "This is an example discount", (cart) => {
-    // amount of items are ___
-    // cart contains ___
-    // cart total is ___
-    // if total is mor than __
-    // etc.
-    return DiscountedItem("coffee_espresso:sugar_125", 0.1);
-});
