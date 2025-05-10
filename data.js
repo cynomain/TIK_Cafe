@@ -385,6 +385,10 @@ class MenuItem {
         this.customizations = customizations;
         this.icon_path = icon_path;
     }
+
+    isFree(){
+        return this.price == 0;
+    }
 }
 
 class Customization {
@@ -400,6 +404,14 @@ class Customization {
         this.max_choices = max_choices;
         this.min_choices = min_choices;
     }
+
+    isRequired() {
+        return this.min_choices > 0;
+    }
+
+    isSingle() {
+        return this.max_choices == 1;
+    }
 }
 
 class Choice {
@@ -410,5 +422,9 @@ class Choice {
     constructor(name, price) {
         this.name = name;
         this.price = price;
+    }
+
+    isFree(){
+        return this.price == 0;
     }
 }
