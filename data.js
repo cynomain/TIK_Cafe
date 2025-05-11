@@ -104,6 +104,7 @@ class DiscountedItem {
     }
 }
 
+// DEVON REINHART
 
 const CUSTOMIZATION_SUGAR = new Customization(
     "Gula",
@@ -135,7 +136,7 @@ const CUSTOMIZATION_SIZE = new Customization(
     [
         new Choice("Small", 0, "size_small"),
         new Choice("Medium", 0, "size_medium"),
-        new Choice("Large", 0, "size_large"),
+        new Choice("Large", 4000, "size_large"),
     ],
     "customization_size"
 );
@@ -143,13 +144,13 @@ const CUSTOMIZATION_SIZE = new Customization(
 const CUSTOMIZATION_TOPPINGS = new Customization(
     "Topping",
     [
-        new Choice("Boba", 5000, "topping_boba"),
+        new Choice("Boba", 4000, "topping_boba"),
+        new Choice("Popping Boba", 4500, "topping_poppingboba"),
         new Choice("Pudding", 5000, "topping_pudding"),
-        new Choice("Grass Jelly", 5000, "topping_grassjelly"),
-        new Choice("Coconut Jelly", 5000, "topping_coconutjelly"),
-        new Choice("Red Bean", 5000, "topping_redbean"),
-        new Choice("Chia Seed", 5000, "topping_chiaseed"),
-        new Choice("Aloe Vera", 5000, "topping_aloevera"),
+        new Choice("Grass Jelly", 2000, "topping_grassjelly"),
+        new Choice("Coconut Jelly", 3000, "topping_coconutjelly"),
+        //new Choice("Red Bean", 2000, "topping_redbean"),
+        new Choice("Chia Seed", 1000, "topping_chiaseed"),
         new Choice("Espresso Shot", 5000, "topping_espressoshot"),
         new Choice("Ice Cream", 6000, "topping_icecream"),
     ],
@@ -167,6 +168,7 @@ const CUSTOMIZATION_MILK = new Customization(
         new Choice("Almond Milk", 6000, "milk_almond"),
         new Choice("Soy Milk", 5000, "milk_soy"),
         new Choice("Oat Milk", 5000, "milk_oat"),
+        new Choice("Creamer", 2000, "milk_creamer"),
     ],
     "customization_milk"
 );
@@ -293,7 +295,15 @@ const CATEGORY_COFFEE = new MenuCategory(
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/hazelnut_latte.png",
             "coffee_hazelnutlatte"
-        )
+        ),
+        new MenuItem(
+            "Ballerina Cappucina",
+            2000000,
+            ">:D",
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            "assets/menu/kopi/ballerina.png",
+            "coffee_ballerinacappucina"
+        ),
     ],
     "assets/icons/menu/coffee.svg"
 );

@@ -10,15 +10,21 @@
     <header>
       <div class="top">
         <div class="title">
-          <h1 class="title">Cafe</h1>
-          <h3>Devon Reinhart</h3>
+          <h1 class="title">Cafe Lorem Ipsum</h1>
+          <h3>Dolor Sit Amet Devon Reinhart XI2</h3>
         </div>
         <div class="buttons">
-          <button class="icon-btn transparent">
+          <button class="icon-btn-label primary-translucent">
             <img
               src="assets/icons/checkout/cart.svg"
               class="filter-background"
             />
+            <p class="header-cart-amount-text">10</p>
+            <!--img
+              class="cart-icon-counter filter-secondary"
+              src="assets/icons/generic/circle.svg"
+            /-->
+            <!--p class="cart-icon-counter-text">99</p-->
           </button>
         </div>
       </div>
@@ -39,7 +45,7 @@
         </div>
       </div>
     </header>
-
+    <p class="disabled">Devon Reinhart</p>
     <main class="main-content">
       <div class="menu-grid">
         <button class="menu-item">
@@ -59,90 +65,18 @@
           <h2 class="menu-name">Ballerina Cappuccina</h2>
           <p class="menu-price">Rp 10.000</p>
         </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
       </div>
     </main>
 
-    <div class="overlay">
-      <div class="dialog-card">
+    <div class="overlay open">
+      <div class="dialog-card disabled" id="dialog-menuview">
         <h2 class="title" id="mdialog-title">Ballerina Cappucina</h2>
         <img id="mdialog-img" src="assets/menu/kopi/ballerina.png" />
         <p class="description" id="mdialog-description">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
           voluptatibus.
         </p>
-        <div class="customizations" id="mdialog-customizations">
-
-        </div>
+        <div class="customizations" id="mdialog-customizations"></div>
 
         <div class="customization quantity center col" id="mdialog-quantity">
           <p>Jumlah</p>
@@ -155,6 +89,7 @@
               id="mdialog-q-quantity"
               name="quantity"
               min="1"
+              max="99"
               value="1"
             />
             <button type="button" class="icon-btn" id="mdialog-q-btn-increase">
@@ -178,10 +113,90 @@
           </button>
         </div>
       </div>
+
+      <div class="dialog-card cart " id="dialog-cart">
+        <div class="titles">
+          <h2 class="title" id="cdialog-title">Keranjang</h2>
+          <h3 id="cdialog-amountitems">10 item</h3>
+        </div>
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="vertical">
+              <img
+                src="assets/menu/kopi/ballerina.png"
+                class="cartmenu-image"
+              />
+              <button class="edit icon-btn-label background iprimary">
+                <img src="assets/icons/generic/edit.svg" />
+                <p>Edit</p>
+              </button>
+            </div>
+            <table class="cart-table">
+              <tr>
+                <td class="main"><p>Ballerina Capuccina</p></td>
+                <td>Rp 10.000</td>
+              </tr>
+              <tr>
+                <td>Whole Milk</td>
+                <td>Rp 10.000</td>
+              </tr>
+              <tr>
+                <td>Whole Milk</td>
+                <td>Rp 10.000</td>
+              </tr>
+              <tr>
+                <td>Whole Milk</td>
+                <td>Rp 10.000</td>
+              </tr>
+            </table>
+            <div class="vertical quantity">
+              <button class="icon-btn primary add">
+                <img src="assets/icons/generic/add.svg" />
+              </button>
+              <p>10</p>
+              <button class="icon-btn secondary remove">
+                <img src="assets/icons/generic/remove.svg" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="totals">
+          <table class="cart-table">
+            <tr>
+              <td class="main">Subtotal</td>
+              <td>Rp 50.000</td>
+            </tr>
+            <tr>
+              <td class="main"><p>Total</p></td>
+              <td>Rp 50.000</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="buttons">
+          <button id="mdialog-btn-cancel" class="icon-btn-label secondary">
+            <img src="assets/icons/generic/close.svg" class="filter-primary" />
+            <p>Tutup</p>
+          </button>
+          <button id="mdialog-btn-add-to-cart" class="icon-btn-label">
+            <img
+              src="assets/icons/checkout/cart_checkout.svg"
+              class="filter-background"
+            />
+            <p>Pembayaran</p>
+          </button>
+        </div>
+      </div>
     </div>
 
+    <div class="toast-host">
+
+    </div>
+    <!--DEVON REINHART-->
     <script src="helper.js"></script>
     <script src="data.js"></script>
+    <script src="toast.js"></script>
     <script src="menu.js"></script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
