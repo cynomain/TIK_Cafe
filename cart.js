@@ -50,3 +50,52 @@ var Cart = {
         this.Items = this.Items.filter(item => item.uuid !== uuid);
     }
 }
+
+var CartUI = {
+
+}
+
+/**
+ * 
+ * @param {CartItem} cartItem 
+ */
+function CreateCartItemElement(cartItem) {
+    const makeRow = (first, second, main = false) =>
+        `<tr>
+            <td ${main ? 'class="main"' : ''}><p>${first}</p></td>
+            <td><p>${second}</p></td>
+        </tr>
+        `;
+
+    let cartItemsText = makeRow(cartItem.menuItem.name, cartItem.menuItem.price, true) + cartItem.selectedCustomizations.map(c => {
+        cartItem.menuItem.customizations.some(x => x.choices.find(x => x.id == c));
+    }).join("");
+
+    let final = `
+        <div class="cart-item">
+            <div class="vertical">
+              <img src="${cartItem.menuItem.icon_path}" class="cartmenu-image"/>
+              <button class="edit icon-btn-label background iprimary" id="btn-edit">
+                <img src="assets/icons/generic/edit.svg" />
+                <p>Edit</p>
+              </button>
+            </div>
+            <table class="cart-table">
+              ${cartItemsText}
+            </table>
+            <div class="vertical quantity">
+              <button class="icon-btn primary add" id="btn-q-add">
+                <img src="assets/icons/generic/add.svg" />
+              </button>
+              <p id="q-quantity">10</p>
+              <button class="icon-btn secondary remove" id="btn-q-remove">
+                <img src="assets/icons/generic/remove.svg" />
+              </button>
+            </div>
+          </div>
+          `.trim();
+    let el = htmlToNode(final);
+    console.log(el);
+    console.log(final);
+}
+CreateCartItemElement(new CartItem(CATEGORY_COFFEE.items[5], ["size_small", "sugar_less"]))
