@@ -14,12 +14,15 @@
           <h3>Dolor Sit Amet Devon Reinhart XI2</h3>
         </div>
         <div class="buttons">
-          <button class="icon-btn-label primary-translucent">
+          <button
+            class="icon-btn-label primary-translucent"
+            id="header-btn-cart"
+          >
             <img
               src="assets/icons/checkout/cart.svg"
               class="filter-background"
             />
-            <p class="header-cart-amount-text">10</p>
+            <p class="header-cart-amount-text" id="header-cart-amount">10</p>
             <!--img
               class="cart-icon-counter filter-secondary"
               src="assets/icons/generic/circle.svg"
@@ -68,7 +71,7 @@
       </div>
     </main>
 
-    <div class="overlay open">
+    <div class="overlay">
       <div class="dialog-card disabled" id="dialog-menuview">
         <h2 class="title" id="mdialog-title">Ballerina Cappucina</h2>
         <img id="mdialog-img" src="assets/menu/kopi/ballerina.png" />
@@ -114,7 +117,7 @@
         </div>
       </div>
 
-      <div class="dialog-card cart " id="dialog-cart">
+      <div class="dialog-card cart disabled" id="dialog-cart">
         <div class="titles">
           <h2 class="title" id="cdialog-title">Keranjang</h2>
           <h3 id="cdialog-amountitems">10 item</h3>
@@ -164,12 +167,16 @@
         <div class="totals">
           <table class="cart-table">
             <tr>
-              <td class="main">Subtotal</td>
-              <td>Rp 50.000</td>
+              <td><p>Subtotal</p></td>
+              <td><p id="cdialog-subtotal">Rp 50.000</p></td>
+            </tr>
+            <tr>
+              <td><p>PPN (11%)</p></td>
+              <td><p id="cdialog-ppn">Rp 50.000</p></td>
             </tr>
             <tr>
               <td class="main"><p>Total</p></td>
-              <td>Rp 50.000</td>
+              <td><p id="cdialog-total">Rp 50.000</p></td>
             </tr>
           </table>
         </div>
@@ -190,8 +197,13 @@
       </div>
     </div>
 
-    <div class="toast-host">
-
+    <div class="toast-host"></div>
+    <div class="anim-host">
+      <img
+        src="assets/menu/kopi/ballerina.png"
+        id="cart-anim"
+        class="cart-anim-icon"
+      />
     </div>
     <!--DEVON REINHART-->
     <script src="helper.js"></script>

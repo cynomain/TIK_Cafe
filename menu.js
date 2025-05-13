@@ -1,11 +1,16 @@
 const menuGrid = $Q(".menu-grid");
 const overlay = $Q(".overlay");
 const dialogMenu = $I("dialog-menuview");
+const tabsHost = $Q(".tabs");
+const animHost = $Q(".anim");
+const animCartImg = $I("cart-anim");
+
 const ICON_RADIO_UNCHECKED = "assets/icons/generic/radio_unchecked.svg";
 const ICON_RADIO_CHECKED = "assets/icons/generic/radio_checked.svg";
 const ICON_CHECKBOX_UNCHECKED = "assets/icons/generic/checkbox_no.svg";
 const ICON_CHECKBOX_CHECKED = "assets/icons/generic/checkbox_yes.svg";
 
+var SELECTED_TAB = "none";
 
 class CustomizationController {
     /**
@@ -93,7 +98,57 @@ class CustomizationController {
     }
 }
 
-function CreateMenuItem(name, imgPath, priceText) {
+let p1 = performance.now();
+const CategoryTabsElements = {};
+CATEGORIES.forEach(category => {
+    CategoryTabsElements[category.id] = CreateCategoryTab(category);
+});
+
+const CategoryMenuElements = {};
+CATEGORIES.forEach(cat => {
+    CategoryMenuElements[cat.id] = cat.items.map(x => CreateMenuItemCard(x));
+})
+let p2 = performance.now();
+console.log("Loading time: " + p2 - p1 + " ms");
+
+
+tabsHost.innerHTML = "";
+for (const [key, value] of Object.entries(CategoryTabsElements)) {
+    tabsHost.appendChild(value);
+}
+
+
+function UpdateTabs() {
+    for (let key of Object.keys(CategoryTabsElements)) {
+        if (key == SELECTED_TAB) {
+            CategoryTabsElements[key].classList.add("active");
+        } else {
+            CategoryTabsElements[key].classList.remove("active");
+        }
+    }
+}
+
+function GoToTab(id) {
+    if (id == SELECTED_TAB) {
+        return;
+    }
+    menuGrid.innerText = "";
+    SELECTED_TAB = id;
+    CategoryMenuElements[id].forEach(x => {
+        menuGrid.appendChild(x);
+    })
+    UpdateTabs();
+}
+
+
+GoToTab(CATEGORIES[0].id);
+
+/**
+ * 
+ * @param {MenuItem} menuItem 
+ * @returns {Element} 
+*/
+function CreateMenuItemCard(menuItem) {
     let btn = document.createElement("button");
     btn.className = "menu-item";
 
@@ -101,21 +156,56 @@ function CreateMenuItem(name, imgPath, priceText) {
     let h2 = document.createElement("h2");
     let p = document.createElement("p");
 
-    img.src = imgPath;
-    h2.innerText = name;
-    p.innerText = FormatRupiah(number);
+    img.src = menuItem.icon_path;
+    h2.innerText = menuItem.name;
+    p.innerText = FormatRupiah(menuItem.price);
 
     img.className = "menu-image";
     h2.className = "menu-name";
     p.className = "menu-price";
 
-    //TODO: DIALOG
+    img.loading = "lazy";
+
+    btn.appendChild(img);
+    btn.appendChild(h2);
+    btn.appendChild(p);
+
+    btn.onclick = () => {
+        SetMenuDialog(menuItem);
+        OpenMenuDialog();
+    }
 
     return btn;
 }
 
 /**
- * @typedef DialogData
+ * 
+ * @param {MenuCategory} category 
+ */
+function CreateCategoryTab(category) {
+    let btn = document.createElement("button");
+    let img = document.createElement("img");
+    let p = document.createElement("p");
+
+    btn.className = "tab";
+    img.className = "icon";
+
+    p.innerText = category.name;
+    img.src = category.icon_path;
+
+    btn.appendChild(img);
+    btn.appendChild(p);
+
+    btn.onclick = () => {
+        GoToTab(category.id);
+    };
+
+    return btn;
+}
+
+
+/**
+ * @typedef MenuDialogData
  * @type {object}
  * @property {Customization[]} customizations
  * @property {CustomizationController[]} customizationControllers
@@ -124,16 +214,16 @@ function CreateMenuItem(name, imgPath, priceText) {
  */
 
 /**
- * @type {DialogData}
+ * @type {MenuDialogData}
  */
-var DialogData = {
+var MenuDialogData = {
     menuItem: null,
     customizations: [],
     quantity: 1,
     customizationControllers: [],
     updateDialogPrice: function () {
-        let totalPrice = DialogData.menuItem.price;
-        DialogData.customizationControllers.forEach((controller) => {
+        let totalPrice = MenuDialogData.menuItem.price;
+        MenuDialogData.customizationControllers.forEach((controller) => {
             controller.Selected.forEach((selected, index) => {
                 if (selected) {
                     totalPrice += controller.Customization.choices[index].price;
@@ -141,7 +231,7 @@ var DialogData = {
             });
         });
 
-        totalPrice *= DialogData.quantity;
+        totalPrice *= MenuDialogData.quantity;
 
         DialogUI.price.innerText = FormatRupiah(totalPrice);
     },
@@ -156,7 +246,7 @@ var DialogData = {
         this.updateDialogPrice();
     },
     addToCart: function () {
-        let unfulfilledCustomization = DialogData.customizationControllers.find((controller) => {
+        let unfulfilledCustomization = MenuDialogData.customizationControllers.find((controller) => {
             if (controller.Customization.isRequired()) {
                 let selectedCount = controller.Selected.filter((selected) => selected).length;
                 return selectedCount < controller.Customization.min_choices;
@@ -174,21 +264,24 @@ var DialogData = {
                 ShakeElement(elementToShake, 1);
                 ShakeElement(dialogMenu, .25);
             }, 750);
-            return; // Exit the function if customizations are not fulfilled
+            return false;
         }
 
         let customs = [];
         this.customizationControllers.forEach(x => {
+            console.log(x)
             x.Selected.forEach((y, i) => {
                 if (y) {
-                    customs.push(x.Customization.choices[i]);
+                    customs.push(x.Customization.choices[i].id);
                 }
             });
         })
+        console.log(customs)
         let cartItem = new CartItem(this.menuItem, customs, this.quantity);
         Cart.addItem(cartItem);
 
         Toast.showToast("Telah ditambahkan ke keranjang!");
+        return true;
     }
 
 }
@@ -206,38 +299,45 @@ var DialogUI = {
 };
 
 DialogUI.btn_add2cart.addEventListener("click", (e) => {
-    DialogData.addToCart();
+    if (MenuDialogData.addToCart()) {
+        CloseMenuDialog();
+        AnimateItemToCart(MenuDialogData.menuItem.icon_path);
+    }
 });
+
+DialogUI.btn_cancel.addEventListener("click", () => {
+    CloseMenuDialog();
+})
 
 DialogUI.quantityInput.addEventListener("input", (e) => {
     let value = parseInt(DialogUI.quantityInput.value);
     if (!isNaN(value)) {
-        DialogData.changeQuantity(value);
-        previousValue = DialogData.quantity;
+        MenuDialogData.changeQuantity(value);
+        previousValue = MenuDialogData.quantity;
     }
 
     if (DialogUI.quantityInput.value === "") {
         //DialogData.quantity = 1; 
     } else {
-        DialogUI.quantityInput.value = DialogData.quantity;
+        DialogUI.quantityInput.value = MenuDialogData.quantity;
     }
 });
 
 DialogUI.quantityInput.addEventListener("blur", (e) => {
     if (DialogUI.quantityInput.value === "") {
         //DialogData.quantity = previousValue; // Revert to previous value if blank
-        DialogUI.quantityInput.value = DialogData.quantity;
+        DialogUI.quantityInput.value = MenuDialogData.quantity;
     }
 });
 
 DialogUI.quantityReduce.addEventListener("click", (e) => {
-    DialogData.changeQuantity(DialogData.quantity - 1);
-    DialogUI.quantityInput.value = DialogData.quantity;
+    MenuDialogData.changeQuantity(MenuDialogData.quantity - 1);
+    DialogUI.quantityInput.value = MenuDialogData.quantity;
 });
 
 DialogUI.quantityIncrease.addEventListener("click", (e) => {
-    DialogData.changeQuantity(DialogData.quantity + 1);
-    DialogUI.quantityInput.value = DialogData.quantity;
+    MenuDialogData.changeQuantity(MenuDialogData.quantity + 1);
+    DialogUI.quantityInput.value = MenuDialogData.quantity;
 });
 
 /**
@@ -250,25 +350,27 @@ function SetMenuDialog(menuItem) {
     DialogUI.description.innerText = menuItem.description;
     DialogUI.price.innerText = FormatRupiah(menuItem.price);
 
-    DialogData.menuItem = menuItem;
-    DialogData.customizations = menuItem.customizations;
-    DialogData.customizationControllers = [];
-    DialogData.quantity = 1;
+    MenuDialogData.menuItem = menuItem;
+    MenuDialogData.customizations = menuItem.customizations;
+    MenuDialogData.customizationControllers = [];
+    MenuDialogData.quantity = 1;
 
-    DialogUI.quantityInput.value = DialogData.quantity;
+    DialogUI.quantityInput.value = MenuDialogData.quantity;
 
     DialogUI.customizations.innerHTML = "";
-    DialogData.customizations.forEach((customization) => {
+    MenuDialogData.customizations.forEach((customization) => {
         let [element, controller] = BuildMenuCustomization(customization);
         controller.onChange = [(selected) => {
             controller.Selected = selected;
-            DialogData.updateDialogPrice();
+            MenuDialogData.updateDialogPrice();
         }];
         DialogUI.customizations.appendChild(element);
-        DialogData.customizationControllers.push(controller);
+        MenuDialogData.customizationControllers.push(controller);
     });
 
-
+    setTimeout(() => {
+        dialogMenu.scrollTop = DialogUI.title.offsetTop;
+    }, 100);
 }
 
 /**
@@ -333,10 +435,11 @@ function BuildMenuCustomization(customization) {
     return [mainDiv, customizationController];
 }
 
-/*
-let test = BuildMenuCustomization(CUSTOMIZATION_TOPPINGS);
-let test2 = BuildMenuCustomization(CUSTOMIZATION_MILK);
-$Q(".customizations").appendChild(test[0]);
-$Q(".customizations").appendChild(test2[0]);
-*/
-SetMenuDialog(CATEGORY_COFFEE.items.find((item) => item.id == "coffee_ballerinacappucina"));
+function AnimateItemToCart(iconPath) {
+    animCartImg.src = iconPath;
+    animCartImg.classList.add("animate");
+    animCartImg.onanimationend = () => {
+        animCartImg.classList.remove("animate");
+        console.log("DONT FORGET TO UPDATE CART AMOUNT");
+    }
+}

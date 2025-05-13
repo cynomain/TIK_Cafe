@@ -1,7 +1,9 @@
-let cartDialog = $I("dialog-cart");
-let cartItemAmount = $I("cdialog-amountitems");
+const dialogCart = $I("dialog-cart");
+const cartItemAmount = $I("cdialog-amountitems");
+const headerButtonCart = $I("header-btn-cart");
+const headerCartAmountText = $I("header-cart-amount");
 
-let cartItemsContainer = $Q(".cart-items")
+const cartItemsContainer = $Q(".cart-items")
 
 /**
  * @param {MenuItem} menuItem
@@ -17,11 +19,18 @@ class CartItem {
     }
 }
 
+headerButtonCart.addEventListener("click", () => {
+    OpenCartDialog();
+})
+
 // DEVON REINHART
 
 var Cart = {
     Items: [],
-    addItem(menuItem, selectedCustomizations, amount) {
+    addItem(item) {
+        let selectedCustomizations = item.selectedCustomizations;
+        let menuItem = item.menuItem;
+        let amount = item.amount;
         let sortedCustomizations = [...selectedCustomizations].sort();
         let existingItem = this.Items.find(item =>
             item.menuItem.id === menuItem.id &&
@@ -52,7 +61,9 @@ var Cart = {
 }
 
 var CartUI = {
-
+    ItemAmount: $I("cdialog-amountitems"),
+    ItemsHost: $Q("cart-items"),
+    
 }
 
 /**
@@ -95,7 +106,5 @@ function CreateCartItemElement(cartItem) {
           </div>
           `.trim();
     let el = htmlToNode(final);
-    console.log(el);
-    console.log(final);
 }
 CreateCartItemElement(new CartItem(CATEGORY_COFFEE.items[5], ["size_small", "sugar_less"]))
