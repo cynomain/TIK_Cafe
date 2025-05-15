@@ -532,3 +532,7 @@ function FetchCategories() {
     // Jika ada API, pake API.
     return Promise.resolve(CATEGORIES);
 }
+
+function FetchTax() {
+    return 0.12;
+}

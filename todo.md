@@ -5,10 +5,10 @@
 - [x] Dialog UI Template
 - [x] Menu Data
 - [x] Dialog Element Population
-- [ ] Dialog Functionality
-- [ ] Menu Functionality
+- [X] Dialog Functionality
+- [X] Menu Functionality
 - [x] Cart UI Template
-- [ ] Cart Functionality
+- [X] Cart Functionality
 - [ ] Discounts
 - [ ] Payments
 - [ ] Print Receipt

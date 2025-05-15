@@ -7,7 +7,7 @@
 /**
  * @type Toast
  */
-Toast = {
+var Toast = {
     parent: $Q(".toast-host"),
     showToast: function (text) {
         let el = this.elCreate(text);

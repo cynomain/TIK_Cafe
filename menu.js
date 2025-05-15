@@ -29,6 +29,16 @@ class CustomizationController {
         this.onChange = Array.isArray(onChange) ? onChange : [];
     }
 
+    GetSelectionsAsIDArray() {
+        let arr = [];
+        this.Selected.forEach((b, i) => {
+            if (b) {
+                arr.push(this.Customization.choices[i].id);
+            }
+        });
+        return arr;
+    }
+
     SetSelection(index) {
         if (this.Customization.isSingle()) {
             this.Selected = Array.from({ length: this.Customization.choices.length }, () => false);
@@ -50,7 +60,7 @@ class CustomizationController {
                     ShakeElement(dialogMenu, .25);
                     ShakeElement(this.Elements[index], 1);
 
-                    Toast.showToast("Cek kriteria pilihan!")
+                    Toast.showToast("Cek lagi pilihan!")
                 }
             }
         }
@@ -99,6 +109,7 @@ class CustomizationController {
 }
 
 let p1 = performance.now();
+
 const CategoryTabsElements = {};
 CATEGORIES.forEach(category => {
     CategoryTabsElements[category.id] = CreateCategoryTab(category);
@@ -108,8 +119,9 @@ const CategoryMenuElements = {};
 CATEGORIES.forEach(cat => {
     CategoryMenuElements[cat.id] = cat.items.map(x => CreateMenuItemCard(x));
 })
+
 let p2 = performance.now();
-console.log("Loading time: " + p2 - p1 + " ms");
+console.log("Loading time: " + p1 == p2 ? "Instant" : (p2 - p1 + " ms"));
 
 
 tabsHost.innerHTML = "";
@@ -221,6 +233,8 @@ var MenuDialogData = {
     customizations: [],
     quantity: 1,
     customizationControllers: [],
+    action: 0,
+    cartItemUUID: null,
     updateDialogPrice: function () {
         let totalPrice = MenuDialogData.menuItem.price;
         MenuDialogData.customizationControllers.forEach((controller) => {
@@ -233,17 +247,17 @@ var MenuDialogData = {
 
         totalPrice *= MenuDialogData.quantity;
 
-        DialogUI.price.innerText = FormatRupiah(totalPrice);
+        MenuDialogUI.price.innerText = FormatRupiah(totalPrice);
     },
     changeQuantity: function (value) {
         if (isNaN(value) || value < 1) {
-            this.quantity = 1;
+            MenuDialogData.quantity = 1;
         } else if (value > 99) {
-            this.quantity = 99;
+            MenuDialogData.quantity = 99;
         } else {
-            this.quantity = value;
+            MenuDialogData.quantity = value;
         }
-        this.updateDialogPrice();
+        MenuDialogData.updateDialogPrice();
     },
     addToCart: function () {
         let unfulfilledCustomization = MenuDialogData.customizationControllers.find((controller) => {
@@ -257,7 +271,7 @@ var MenuDialogData = {
         if (unfulfilledCustomization) {
             let elementToShake = unfulfilledCustomization.MainElement;
             elementToShake.scrollIntoView({ behavior: "smooth", block: "center" });
-            Toast.showToast("Cek kriteria pilihan!");
+            Toast.showToast("Cek lagi pilihan!");
 
             setTimeout(() => {
                 unfulfilledCustomization.AlertTitle();
@@ -268,16 +282,16 @@ var MenuDialogData = {
         }
 
         let customs = [];
-        this.customizationControllers.forEach(x => {
-            console.log(x)
+        MenuDialogData.customizationControllers.forEach(x => {
             x.Selected.forEach((y, i) => {
                 if (y) {
                     customs.push(x.Customization.choices[i].id);
                 }
             });
         })
-        console.log(customs)
-        let cartItem = new CartItem(this.menuItem, customs, this.quantity);
+        let cartItem = new CartItem(MenuDialogData.menuItem, customs, MenuDialogData.quantity);
+        console.log("adding to cart")
+        console.log(cartItem);
         Cart.addItem(cartItem);
 
         Toast.showToast("Telah ditambahkan ke keranjang!");
@@ -285,7 +299,7 @@ var MenuDialogData = {
     }
 
 }
-var DialogUI = {
+var MenuDialogUI = {
     btn_add2cart: $I("mdialog-btn-add-to-cart"),
     btn_cancel: $I("mdialog-btn-cancel"),
     img: $I("mdialog-img"),
@@ -296,81 +310,129 @@ var DialogUI = {
     quantityInput: $I("mdialog-q-quantity"),
     quantityReduce: $I("mdialog-q-btn-reduce"),
     quantityIncrease: $I("mdialog-q-btn-increase"),
+    primaryButtonImg: $Q("#mdialog-btn-add-to-cart>img"),
+    primaryButtonText: $Q("#mdialog-btn-add-to-cart>p")
 };
 
-DialogUI.btn_add2cart.addEventListener("click", (e) => {
+let temp_animAddToCartAmount = 0;
+MenuDialogUI.btn_add2cart.addEventListener("click", (e) => {
+    temp_animAddToCartAmount = Cart.getAmountOfItems();
+    if (MenuDialogData.cartItemUUID != null) {
+        let ci = Cart.Items.find(x => x.uuid == MenuDialogData.cartItemUUID);
+        ci.amount = MenuDialogData.quantity;
+        let customs = [];
+        MenuDialogData.customizationControllers.forEach(x => {
+            customs = customs.concat(x.GetSelectionsAsIDArray());
+        })
+        console.log(customs);
+
+        //Check for same
+        let same = Cart.checkForSame(MenuDialogData.menuItem, customs);
+        if (same && same.uuid != MenuDialogData.cartItemUUID) {
+            same.amount += MenuDialogData.quantity;
+            Cart.removeItem(MenuDialogData.cartItemUUID);
+        } else {
+            ci.setCustoms(customs);
+        }
+
+
+
+        CloseMenuDialog();
+        CartUI.updateCart();
+        return;
+    }
     if (MenuDialogData.addToCart()) {
         CloseMenuDialog();
         AnimateItemToCart(MenuDialogData.menuItem.icon_path);
     }
 });
 
-DialogUI.btn_cancel.addEventListener("click", () => {
+MenuDialogUI.btn_cancel.addEventListener("click", () => {
     CloseMenuDialog();
 })
 
-DialogUI.quantityInput.addEventListener("input", (e) => {
-    let value = parseInt(DialogUI.quantityInput.value);
+MenuDialogUI.quantityInput.addEventListener("input", (e) => {
+    let value = parseInt(MenuDialogUI.quantityInput.value);
     if (!isNaN(value)) {
         MenuDialogData.changeQuantity(value);
         previousValue = MenuDialogData.quantity;
     }
 
-    if (DialogUI.quantityInput.value === "") {
+    if (MenuDialogUI.quantityInput.value === "") {
         //DialogData.quantity = 1; 
     } else {
-        DialogUI.quantityInput.value = MenuDialogData.quantity;
+        MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
     }
 });
 
-DialogUI.quantityInput.addEventListener("blur", (e) => {
-    if (DialogUI.quantityInput.value === "") {
+MenuDialogUI.quantityInput.addEventListener("blur", (e) => {
+    if (MenuDialogUI.quantityInput.value === "") {
         //DialogData.quantity = previousValue; // Revert to previous value if blank
-        DialogUI.quantityInput.value = MenuDialogData.quantity;
+        MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
     }
 });
 
-DialogUI.quantityReduce.addEventListener("click", (e) => {
+MenuDialogUI.quantityReduce.addEventListener("click", (e) => {
     MenuDialogData.changeQuantity(MenuDialogData.quantity - 1);
-    DialogUI.quantityInput.value = MenuDialogData.quantity;
+    MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
 });
 
-DialogUI.quantityIncrease.addEventListener("click", (e) => {
+MenuDialogUI.quantityIncrease.addEventListener("click", (e) => {
     MenuDialogData.changeQuantity(MenuDialogData.quantity + 1);
-    DialogUI.quantityInput.value = MenuDialogData.quantity;
+    MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
 });
+
+
 
 /**
  * 
  * @param {MenuItem} menuItem 
+ * @param {number} amount 
+ * @param {number} action 
+ * @param {CartItem|null} cartItem 
  */
-function SetMenuDialog(menuItem) {
-    DialogUI.img.src = menuItem.icon_path;
-    DialogUI.title.innerText = menuItem.name;
-    DialogUI.description.innerText = menuItem.description;
-    DialogUI.price.innerText = FormatRupiah(menuItem.price);
+function SetMenuDialog(menuItem, preSelections = [], amount = 1, action = 0, cartItem = null) {
+    MenuDialogUI.img.src = menuItem.icon_path;
+    MenuDialogUI.title.innerText = menuItem.name;
+    MenuDialogUI.description.innerText = menuItem.description;
+    MenuDialogUI.price.innerText = FormatRupiah(menuItem.price);
 
     MenuDialogData.menuItem = menuItem;
     MenuDialogData.customizations = menuItem.customizations;
     MenuDialogData.customizationControllers = [];
-    MenuDialogData.quantity = 1;
+    MenuDialogData.quantity = amount;
+    MenuDialogData.action = action;
+    MenuDialogData.cartItemUUID = cartItem;
 
-    DialogUI.quantityInput.value = MenuDialogData.quantity;
+    MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
 
-    DialogUI.customizations.innerHTML = "";
+    MenuDialogUI.customizations.innerHTML = "";
     MenuDialogData.customizations.forEach((customization) => {
         let [element, controller] = BuildMenuCustomization(customization);
         controller.onChange = [(selected) => {
             controller.Selected = selected;
             MenuDialogData.updateDialogPrice();
         }];
-        DialogUI.customizations.appendChild(element);
+        if (preSelections.length > 0) {
+            controller.Customization.choices.forEach((x, i) => {
+                if (preSelections.includes(x.id)) {
+                    controller.SetSelection(i);
+                }
+            })
+        }
+        MenuDialogUI.customizations.appendChild(element);
         MenuDialogData.customizationControllers.push(controller);
     });
 
+    const PRIMARY_BUTTON_TEXTS = ["Tambah", "Ubah"];
+    const PRIMRARY_BUTTON_ICONS = ["assets/icons/checkout/cart_add.svg", "assets/icons/generic/edit.svg"];
+
+    MenuDialogUI.primaryButtonText.innerText = PRIMARY_BUTTON_TEXTS[action];
+    MenuDialogUI.primaryButtonImg.src = PRIMRARY_BUTTON_ICONS[action];
+
     setTimeout(() => {
-        dialogMenu.scrollTop = DialogUI.title.offsetTop;
-    }, 100);
+        dialogMenu.scrollTop = MenuDialogUI.title.offsetTop;
+    }, 10);
 }
 
 /**
@@ -438,8 +500,10 @@ function BuildMenuCustomization(customization) {
 function AnimateItemToCart(iconPath) {
     animCartImg.src = iconPath;
     animCartImg.classList.add("animate");
+    headerCartAmountText.innerText = temp_animAddToCartAmount;
+
     animCartImg.onanimationend = () => {
         animCartImg.classList.remove("animate");
-        console.log("DONT FORGET TO UPDATE CART AMOUNT");
+        headerCartAmountText.innerText = Cart.getAmountOfItems();
     }
 }

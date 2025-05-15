@@ -4,20 +4,28 @@ const $QA = (id) => document.querySelectorAll(id);
 const $CE = (type) => document.createElement(type);
 // DEVON REINHART
 
-function FormatRupiah(value) {
+const INTL_RUPIAH = Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+});
+function FormatRupiah(value, zeroHandling = 1) {
     if (value === undefined || value === null) {
         return "";
     }
 
     if (value === 0) {
-        return "GRATIS";
+        switch (zeroHandling) {
+            case 1:
+                return "GRATIS"
+            case 2:
+                return "";
+            default:
+                break;
+        }
     }
 
-    let result = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-    }).format(value);
+    let result = INTL_RUPIAH.format(value);
 
     return result;
 }
@@ -73,7 +81,7 @@ function htmlToNode(html) {
 }
 
 const td = htmlToNode('<td>foo</td>'),
-      div = htmlToNode('<div><span>nested</span> <span>stuff</span></div>');
+    div = htmlToNode('<div><span>nested</span> <span>stuff</span></div>');
 
 /**
  * @param {String} HTML representing any number of sibling nodes
@@ -83,4 +91,11 @@ function htmlToNodes(html) {
     const template = document.createElement('template');
     template.innerHTML = html;
     return template.content.childNodes;
+}
+
+
+function clamp(value, min, max) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
 }

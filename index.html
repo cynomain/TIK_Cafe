@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <title>Cafe</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -51,23 +51,114 @@
     <p class="disabled">Devon Reinhart</p>
     <main class="main-content">
       <div class="menu-grid">
-        <button class="menu-item">
-          <img src="assets/menu/kopi/kopi_susu.png" class="menu-image" />
-          <h2 class="menu-name">Kopi Susu</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-
-        <button class="menu-item">
-          <img src="assets/menu/kopi/kopi_susu.png" class="menu-image" />
-          <h2 class="menu-name">Espresso</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
-
-        <button class="menu-item">
-          <img src="assets/menu/kopi/ballerina.png" class="menu-image" />
-          <h2 class="menu-name">Ballerina Cappuccina</h2>
-          <p class="menu-price">Rp 10.000</p>
-        </button>
+        <!-- INI AKAN DIPOPULASI OLEH JS-->
+        <div class="menu-grid">
+          <button class="menu-item">
+            <img
+              src="assets/menu/kopi/espresso.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Espresso</h2>
+            <p class="menu-price">Rp&nbsp;15.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/americano.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Americano</h2>
+            <p class="menu-price">Rp&nbsp;18.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/cappuccino.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Cappuccino</h2>
+            <p class="menu-price">Rp&nbsp;25.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/latte.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Latte</h2>
+            <p class="menu-price">Rp&nbsp;25.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/mocha.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Mocha</h2>
+            <p class="menu-price">Rp&nbsp;28.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/macchiato.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Macchiato</h2>
+            <p class="menu-price">Rp&nbsp;20.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/flat_white.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Flat White</h2>
+            <p class="menu-price">Rp&nbsp;24.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/affogato.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Affogato</h2>
+            <p class="menu-price">Rp&nbsp;30.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/cold_brew.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Cold Brew</h2>
+            <p class="menu-price">Rp&nbsp;20.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/caramel_macchiato.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Caramel Macchiato</h2>
+            <p class="menu-price">Rp&nbsp;32.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/vanilla_latte.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Vanilla Latte</h2>
+            <p class="menu-price">Rp&nbsp;30.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/hazelnut_latte.jpg"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Hazelnut Latte</h2>
+            <p class="menu-price">Rp&nbsp;30.000</p></button
+          ><button class="menu-item">
+            <img
+              src="assets/menu/kopi/ballerina.png"
+              class="menu-image"
+              loading="lazy"
+            />
+            <h2 class="menu-name">Ballerina Cappucina</h2>
+            <p class="menu-price">Rp&nbsp;2.000.000</p>
+          </button>
+        </div>
       </div>
     </main>
 
@@ -82,7 +173,7 @@
         <div class="customizations" id="mdialog-customizations"></div>
 
         <div class="customization quantity center col" id="mdialog-quantity">
-          <p>Jumlah</p>
+          <!--p>Jumlah</p-->
           <div class="quantity-control center row">
             <button type="button" class="icon-btn" id="mdialog-q-btn-reduce">
               <img src="assets/icons/generic/remove.svg" />
@@ -100,6 +191,7 @@
             </button>
           </div>
         </div>
+        
         <p class="price" id="mdialog-price">Rp 10.000</p>
 
         <div class="buttons">
@@ -176,22 +268,45 @@
             </tr>
             <tr>
               <td class="main"><p>Total</p></td>
-              <td><p id="cdialog-total">Rp 50.000</p></td>
+              <td><p id="cdialog-totalw">Rp 50.000</p></td>
             </tr>
           </table>
         </div>
 
         <div class="buttons">
-          <button id="mdialog-btn-cancel" class="icon-btn-label secondary">
+          <button id="cdialog-btn-close" class="icon-btn-label secondary">
             <img src="assets/icons/generic/close.svg" class="filter-primary" />
             <p>Tutup</p>
           </button>
-          <button id="mdialog-btn-add-to-cart" class="icon-btn-label">
+          <button id="cdialog-btn-buy" class="icon-btn-label">
             <img
               src="assets/icons/checkout/cart_checkout.svg"
               class="filter-background"
             />
             <p>Pembayaran</p>
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="dialog-card message top-most no-scroll disabled"
+        id="dialog-message"
+      >
+        <img src="assets/icons/generic/error.svg" class="filter-primary" />
+        <h1 class="title">Apakah anda ingin menghapus (produk)?</h1>
+        <h3 class="message">Lorem ipsum dolor sit amet</h3>
+        <div class="buttons">
+          <button id="msg-dialog-close" class="icon-btn-label primary">
+            <img src="assets/icons/generic/check.svg" />
+            <p>OK</p>
+          </button>
+          <button id="msg-dialog-no" class="icon-btn-label secondary iprimary">
+            <img src="assets/icons/generic/block.svg" />
+            <p>Tidak</p>
+          </button>
+          <button id="msg-dialog-yes" class="icon-btn-label primary">
+            <img src="assets/icons/generic/check.svg" />
+            <p>Ya</p>
           </button>
         </div>
       </div>
@@ -211,6 +326,7 @@
     <script src="toast.js"></script>
     <script src="menu.js"></script>
     <script src="cart.js"></script>
+    <script src="dialog.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

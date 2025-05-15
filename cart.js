@@ -5,37 +5,211 @@ const headerCartAmountText = $I("header-cart-amount");
 
 const cartItemsContainer = $Q(".cart-items");
 
-/**
+const ICON_REMOVE = "assets/icons/generic/remove.svg";
+const ICON_TRASH = "assets/icons/generic/delete.svg";
+
+class CartItem {
+  /**
  * @param {MenuItem} menuItem
  * @param {string[]} selectedCustomizations
  * @param {number} amount
  */
-class CartItem {
   constructor(menuItem, selectedCustomizations, amount) {
     this.menuItem = menuItem;
     this.selectedCustomizations = selectedCustomizations;
     this.amount = amount;
     this.uuid = crypto.randomUUID();
   }
+
+  setCustoms(customs) {
+    this.selectedCustomizations = [...customs].sort();
+  }
+
+  getSinglePrice() {
+    let price = this.menuItem.price;
+    this.selectedCustomizations.forEach((c) => {
+      const customization = this.menuItem.customizations.find((x) =>
+        x.choices.some((choice) => choice.id == c)
+      );
+      if (customization) {
+        const choice = customization.choices.find((choice) => choice.id == c);
+        if (choice) {
+          price += choice.price;
+        }
+      }
+    });
+    return price;
+  }
+
+  getFinalPrice() {
+    return this.getSinglePrice() * this.amount;
+  }
+}
+
+class TableController {
+  /**
+   * 
+   * @param {HTMLTableElement} tableHost 
+   * @param {[][]} elements 
+   */
+  constructor(tableHost, elements) {
+    this.tableHost = tableHost;
+    this.elements = elements;
+
+    this.updateElements();
+  }
+
+  updateElements() {
+    let children = this.tableHost.querySelectorAll("tr");
+
+    if (children.length > this.elements.length) {
+      for (let i = children.length - 1; i >= this.elements.length; i--) {
+        const c = children[i];
+        c.remove();
+      }
+    }
+
+    if (children.length < this.elements.length) {
+      for (let i = children.length; i < this.elements.length; i++) {
+        const e = this.elements[i];
+        let row = this.createRowElement(e[0], e[1], e.length > 2 ? e[2] : false);
+        this.tableHost.appendChild(row);
+      }
+      children = this.tableHost.querySelectorAll("tr");
+    }
+
+    for (let i = 0; i < this.elements.length; i++) {
+      const e = this.elements[i];
+      const c = children[i];
+      let childchildren = c.children;
+      let firstchild = childchildren[0];
+      let secondchild = childchildren[1];
+      let firstP = firstchild.children[0];
+      let secondP = secondchild.children[0];
+      firstP.innerText = e[0];
+      secondP.innerText = e[1];
+      if (e.length > 2 && e[2]) {
+        firstchild.classList.add("main");
+      } else {
+        firstchild.classList.remove("main");
+      }
+    }
+  }
+
+  createRowElement(first, second, main = false) {
+    const tr = document.createElement("tr");
+    const td1 = document.createElement("td");
+    if (main) td1.classList.add("main");
+    const p1 = document.createElement("p");
+    p1.textContent = first;
+    td1.appendChild(p1);
+
+    const td2 = document.createElement("td");
+    const p2 = document.createElement("p");
+    p2.textContent = second;
+    td2.appendChild(p2);
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    return tr;
+  }
 }
 
 class CartItemCardController {
-    constructor (cartItem, mainElement, image, editButton, tableHost, addButton, removeButton, quantityText) {
-        this.cartItem = cartItem;
-        this.mainElement = mainElement;
-        this.image = image;
-        this.editButton = editButton;
-        this.tableHost = tableHost;
-        this.addButton = addButton;
-        this.removeButton = removeButton;
-        this.quantityText = quantityText;
-    }
+  /**
+   * 
+   * @param {CartItem} cartItem 
+   * @param {HTMLDivElement} mainElement 
+   * @param {HTMLImageElement} image 
+   * @param {HTMLButtonElement} editButton 
+   * @param {HTMLTableElement} tableHost 
+   * @param {HTMLButtonElement} addButton 
+   * @param {HTMLButtonElement} removeButton 
+   * @param {HTMLParagraphElement} quantityText 
+   * @param {TableController} tableController
+   */
+  constructor(cartItem, mainElement, image, editButton, tableHost, addButton, removeButton, quantityText, tableController) {
+    this.cartItem = cartItem;
+    this.mainElement = mainElement;
+    this.image = image;
+    this.editButton = editButton;
+    this.tableHost = tableHost;
+    this.addButton = addButton;
+    this.removeButton = removeButton;
+    this.quantityText = quantityText;
+    this.tableController = tableController;
+    addButton.onclick = () => {
+      this.addQuantity(1);
+    };
 
-    addQuantity(amount) {
-        if (Cart.Items.find(x => x.uuid)){
-            
-        }
+    removeButton.onclick = () => {
+      this.addQuantity(-1);
+    };
+
+    editButton.onclick = () => {
+      this.openEditMenu();
+    };
+
+    this.removeButton.children[0].src = this.cartItem.amount <= 1 ? ICON_TRASH : ICON_REMOVE;
+
+  }
+
+  setItem(cartItem) {
+    this.cartItem = cartItem;
+    this.updateElements();
+  }
+
+  addQuantity(amount) {
+    this.cartItem.amount = clamp(this.cartItem.amount + amount, 0, 99);
+    if (this.cartItem.amount < 1) {
+      //Wait confirm
+      ShowMessage("Hapus " + this.cartItem.menuItem.name + "?",
+        "Apakah anda ingin menghapus item ini? Pilihan anda juga akan terhapus.",
+        true,
+        null,
+        () => { this.cartItem.amount = 1 },
+        () => { this.removeCartItem(); Toast.showToast(`${this.cartItem.menuItem.name} dihapus dari keranjang`) }
+      );
+      return;
     }
+    this.updateElements();
+    CartUI.updateTotals();
+
+  }
+
+  openEditMenu() {
+    SetMenuDialog(this.cartItem.menuItem, this.cartItem.selectedCustomizations, this.cartItem.amount, 1, this.cartItem.uuid);
+    OpenMenuDialog(true);
+  }
+
+  destroyElements() {
+    this.mainElement.remove();
+  }
+
+  removeCartItem() {
+    Cart.removeItem(this.cartItem.uuid);
+    this.destroyElements();
+  }
+
+  cartItemExists() {
+    return Cart.Items.some(x => x.uuid == this.cartItem.uuid);
+  }
+
+  destroyIfNonExistant() {
+    if (!this.cartItemExists()) {
+      this.destroyElements();
+    }
+  }
+
+  updateElements() {
+    this.image.src = this.cartItem.menuItem.icon_path;
+    this.quantityText.innerText = this.cartItem.amount;
+    let rows = GetCartItemRows(this.cartItem);
+    this.tableController.elements = rows;
+    this.tableController.updateElements();
+    CartUI.updateItemCounters();
+    this.removeButton.children[0].src = this.cartItem.amount <= 1 ? ICON_TRASH : ICON_REMOVE;
+  }
 }
 
 headerButtonCart.addEventListener("click", () => {
@@ -46,101 +220,223 @@ headerButtonCart.addEventListener("click", () => {
 
 var Cart = {
   Items: [],
+  checkForSame(menuItem, customizations) {
+    let sortedCustomizations = [...customizations].sort();
+    let existingItem = Cart.Items.find(
+      (item) =>
+        item.menuItem.id === menuItem.id &&
+        JSON.stringify([...item.selectedCustomizations].sort()) ===
+        JSON.stringify(sortedCustomizations)
+    );
+    return existingItem;
+  },
   addItem(item) {
     let selectedCustomizations = item.selectedCustomizations;
     let menuItem = item.menuItem;
     let amount = item.amount;
-    let sortedCustomizations = [...selectedCustomizations].sort();
-    let existingItem = this.Items.find(
-      (item) =>
-        item.menuItem.id === menuItem.id &&
-        JSON.stringify([...item.selectedCustomizations].sort()) ===
-          JSON.stringify(sortedCustomizations)
-    );
+    let existingItem = this.checkForSame(item.menuItem, selectedCustomizations);
 
     if (existingItem) {
       existingItem.amount += amount;
+      CartUI.updateCart();
       return existingItem;
-    } else {
-      let newItem = new CartItem(menuItem, sortedCustomizations, amount);
-      this.Items.push(newItem);
-      return newItem;
     }
-  },
 
-  updateItem(uuid, updatedData) {
-    let item = this.Items.find((item) => item.uuid === uuid);
-    if (item) {
-      Object.assign(item, updatedData);
-    }
-    return item;
+    let newItem = new CartItem(menuItem, selectedCustomizations, amount);
+    Cart.Items.push(newItem);
+    CartUI.updateCart();
+    return newItem;
   },
 
   removeItem(uuid) {
-    this.Items = this.Items.filter((item) => item.uuid !== uuid);
+    let index = Cart.Items.findIndex(x => x.uuid == uuid);
+    if (index != -1) {
+      Cart.Items.splice(index, 1);
+      CartUI.updateCart();
+      return true;
+    }
+    else {
+      return false;
+    }
   },
+
+  calculateSubTotal() {
+    let total = 0;
+    Cart.Items.forEach(x => { total += x.getFinalPrice(); });
+    return total;
+  },
+  calculateTax(price) {
+    return price * (FetchTax());
+  },
+  calculateTotal() {
+    let sub = Cart.calculateSubTotal();
+    return sub + Cart.calculateTax(sub);
+  },
+  getAmountOfItems() {
+    let count = 0;
+    Cart.Items.forEach(x => {
+      count += x.amount;
+    })
+    return count;
+  }
 };
 
 var CartUI = {
   ItemAmount: $I("cdialog-amountitems"),
-  ItemsHost: $Q("cart-items"),
+  ItemsHost: $Q(".cart-items"),
   ItemElements: {},
-  updateCart: () => {
-    this.ItemAmount.innerText =
-      Cart.Items.length + " item" + Cart.Items.length > 1 ? "s" : "";
-    for (uuid in ItemElements) {
-
-    }
+  PriceTableController: null,
+  updateItemCounters: () => {
+    let amountOfItems = Cart.getAmountOfItems();
+    headerCartAmountText.innerText = amountOfItems;
+    CartUI.ItemAmount.innerText = amountOfItems > 0 ? (amountOfItems + " item") : "Kosong";
   },
+  updateTotals: () => {
+    let sub = Cart.calculateSubTotal();
+    let tax = Cart.calculateTax(sub);
+    CartUI.PriceTableController.elements[0][1] = FormatRupiah(sub);
+    CartUI.PriceTableController.elements[1][1] = FormatRupiah(tax);
+    CartUI.PriceTableController.elements[2][1] = FormatRupiah(sub + tax);
+    CartUI.PriceTableController.updateElements();
+  },
+  updateCart: () => {
+    CartUI.updateItemCounters();
+    for (uuid in CartUI.ItemElements) {
+      let find = Cart.Items.find(x => x.uuid == uuid);
+      if (find === null || find === undefined) {
+        CartUI.ItemElements[uuid].removeCartItem();
+        CartUI.ItemElements[uuid].destroyElements();
+        delete CartUI.ItemElements[uuid];
+        continue;
+      }
+
+      CartUI.ItemElements[uuid].updateElements();
+    }
+
+    for (let i = 0; i < Cart.Items.length; i++) {
+      const item = Cart.Items[i];
+      if (!Object.keys(CartUI.ItemElements).includes(item.uuid)) {
+        //need to create more
+        let cartController = CreateCartItemController(item);
+        CartUI.ItemElements[item.uuid] = cartController;
+        CartUI.ItemsHost.appendChild(cartController.mainElement);
+        continue;
+      }
+      CartUI.ItemElements[item.uuid].updateElements();
+    }
+
+    CartUI.updateTotals();
+  },
+
+
 };
+
+CartUI.ItemsHost.innerText = "";
+
+let priceTableHost = $Q(".totals>.cart-table");
+CartUI.PriceTableController = new TableController(priceTableHost, [
+  ["Subtotal", "-"],
+  ["Pajak", FetchTax() * 100 + "%"],
+  ["Total", "-", true]
+]);
+
+/**
+ * 
+ * @param {CartItem} cartItem 
+ */
+function GetCartItemRows(cartItem) {
+  let tableRows = [[cartItem.menuItem.name, FormatRupiah(cartItem.menuItem.price), true]];
+  cartItem.selectedCustomizations.forEach((c) => {
+    const customization = cartItem.menuItem.customizations.find((x) =>
+      x.choices.some((choice) => choice.id == c)
+    );
+    if (customization) {
+      const choice = customization.choices.find((choice) => choice.id == c);
+      if (choice) {
+        tableRows.push([choice.name, FormatRupiah(choice.price, 2)]);
+      }
+    }
+  });
+  tableRows.push([
+    cartItem.amount > 1 ? `Total (${cartItem.amount})` : "Total",
+    FormatRupiah(cartItem.getFinalPrice()),
+    true
+  ])
+  return tableRows;
+}
 
 /**
  *
  * @param {CartItem} cartItem
  */
-function CreateCartItemElement(cartItem) {
-  const makeRow = (first, second, main = false) =>
-    `<tr>
-            <td ${main ? 'class="main"' : ""}><p>${first}</p></td>
-            <td><p>${second}</p></td>
-        </tr>
-        `;
+function CreateCartItemController(cartItem) {
 
-  let cartItemsText =
-    makeRow(cartItem.menuItem.name, cartItem.menuItem.price, true) +
-    cartItem.selectedCustomizations
-      .map((c) => {
-        cartItem.menuItem.customizations.some((x) =>
-          x.choices.find((x) => x.id == c)
-        );
-      })
-      .join("");
+  // Create main cart item container
+  const container = document.createElement("div");
+  container.className = "cart-item";
 
-  let final = `
-        <div class="cart-item">
-            <div class="vertical">
-              <img src="${cartItem.menuItem.icon_path}" class="cartmenu-image"/>
-              <button class="edit icon-btn-label background iprimary" id="btn-edit">
-                <img src="assets/icons/generic/edit.svg" />
-                <p>Edit</p>
-              </button>
-            </div>
-            <table class="cart-table">
-              ${cartItemsText}
-            </table>
-            <div class="vertical quantity">
-              <button class="icon-btn primary add" id="btn-q-add">
-                <img src="assets/icons/generic/add.svg" />
-              </button>
-              <p id="q-quantity">10</p>
-              <button class="icon-btn secondary remove" id="btn-q-remove">
-                <img src="assets/icons/generic/remove.svg" />
-              </button>
-            </div>
-          </div>
-          `.trim();
-  let el = htmlToNode(final);
+  // Left vertical section (image + edit button)
+  const vertical = document.createElement("div");
+  vertical.className = "vertical";
+
+  const img = document.createElement("img");
+  img.src = cartItem.menuItem.icon_path;
+  img.className = "cartmenu-image";
+  vertical.appendChild(img);
+
+  const editBtn = document.createElement("button");
+  editBtn.className = "edit icon-btn-label background iprimary";
+  editBtn.id = "btn-edit";
+  const editIcon = document.createElement("img");
+  editIcon.src = "assets/icons/generic/edit.svg";
+  editBtn.appendChild(editIcon);
+  const editText = document.createElement("p");
+  editText.textContent = "Ubah";
+  editBtn.appendChild(editText);
+  vertical.appendChild(editBtn);
+
+  container.appendChild(vertical);
+
+  const table = document.createElement("table");
+  table.className = "cart-table";
+
+
+  let tableController = new TableController(table, GetCartItemRows(cartItem));
+
+  container.appendChild(table);
+
+  const quantityDiv = document.createElement("div");
+  quantityDiv.className = "vertical quantity";
+
+  const addBtn = document.createElement("button");
+  addBtn.className = "icon-btn primary add";
+  addBtn.id = "btn-q-add";
+  const addIcon = document.createElement("img");
+  addIcon.src = "assets/icons/generic/add.svg";
+  addBtn.appendChild(addIcon);
+  quantityDiv.appendChild(addBtn);
+
+  const quantityText = document.createElement("p");
+  quantityText.id = "q-quantity";
+  quantityText.textContent = cartItem.amount;
+  quantityDiv.appendChild(quantityText);
+
+  const removeBtn = document.createElement("button");
+  removeBtn.className = "icon-btn secondary remove";
+  removeBtn.id = "btn-q-remove";
+  const removeIcon = document.createElement("img");
+  removeIcon.src = "assets/icons/generic/remove.svg";
+  removeBtn.appendChild(removeIcon);
+  quantityDiv.appendChild(removeBtn);
+
+  container.appendChild(quantityDiv);
+
+  let cartController = new CartItemCardController(cartItem, container, img, editBtn, table, addBtn, removeBtn, quantityText, tableController);
+  return cartController;
 }
-CreateCartItemElement(
-  new CartItem(CATEGORY_COFFEE.items[5], ["size_small", "sugar_less"])
-);
+
+$I("cdialog-btn-close").addEventListener("click", () => {
+  CloseCartDialog();
+});
+
+CartUI.updateCart();
