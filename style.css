@@ -12,6 +12,8 @@
   --color-tertiary-translucent: #d6c0b3de;
 
   --blur-radius: 16px;
+
+  color-scheme: only light;
 }
 
 html {
@@ -658,9 +660,9 @@ button {
     box-shadow: none;
   }
 
-  &[disabled]{
+  &[disabled] {
     filter: grayscale() opacity(0.5);
-    cursor:not-allowed;
+    cursor: not-allowed;
   }
 }
 
