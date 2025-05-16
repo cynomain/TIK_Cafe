@@ -1,13 +1,16 @@
 const dialogMessage = $I("dialog-message")
 
-const DIALOGS = [dialogMenu, dialogCart, dialogMessage];
+const DIALOGS = [dialogMenu, dialogCart, dialogMessage, dialogTable];
 
+
+var Overlay_AllowClose = true;
 overlay.onclick = (e) => {
-  if (DIALOGS.some((x) => x === e.target || x.contains(e.target))) {
+  if (!Overlay_AllowClose || DIALOGS.some((x) => x === e.target || x.contains(e.target))) {
     return;
   }
-  CloseCartDialog();
-  CloseMenuDialog();
+  DIALOGS.forEach(x => {
+    CloseDialog(x);
+  })
 };
 
 let activeDialogCount = 0;
@@ -29,11 +32,12 @@ function CloseCartDialog() {
 }
 
 const MessageDialog = {
-  msgTitle: $Q(".message>.title"),
-  msgMessage: $Q(".message>.message"),
+  msgTitle: $Q("#dialog-message>.title"),
+  msgMessage: $Q("#dialog-message>.message"),
   msgBtnClose: $I("msg-dialog-close"),
   msgBtnNo: $I("msg-dialog-no"),
   msgBtnYes: $I("msg-dialog-yes"),
+  msgIcon: $I("dm-icon"),
   actionClose: () => { },
   actionNo: () => { },
   actionYes: () => { },
@@ -60,7 +64,7 @@ MessageDialog.msgBtnYes.onclick = () => {
   }
 }
 
-function ShowMessage(title, message, btYesNo, actBtnClose = () => { }, actBtnNo = () => { }, actBtnYes = () => { }) {
+function ShowMessage(title, message, btYesNo, actBtnClose = () => { }, actBtnNo = () => { }, actBtnYes = () => { }, customIcon = null) {
   MessageDialog.msgTitle.innerText = title;
   MessageDialog.msgMessage.innerText = message;
   if (btYesNo) {
@@ -75,6 +79,7 @@ function ShowMessage(title, message, btYesNo, actBtnClose = () => { }, actBtnNo 
   MessageDialog.actionClose = actBtnClose ?? (() => { });
   MessageDialog.actionNo = actBtnNo ?? (() => { });
   MessageDialog.actionYes = actBtnYes ?? (() => { });
+  MessageDialog.msgIcon.src = customIcon ?? "assets/icons/generic/error.svg";
   OpenDialog(dialogMessage);
 }
 

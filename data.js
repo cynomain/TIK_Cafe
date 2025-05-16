@@ -528,11 +528,4 @@ const CATEGORIES = [
 ]
 
 
-function FetchCategories() {
-    // Jika ada API, pake API.
-    return Promise.resolve(CATEGORIES);
-}
-
-function FetchTax() {
-    return 0.12;
-}
+const TAX = 0.12;

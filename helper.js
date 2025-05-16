@@ -99,3 +99,7 @@ function clamp(value, min, max) {
     if (value > max) return max;
     return value;
 }
+
+function randomRange(minIncl, maxExcl) {
+  return Math.random() * (maxExcl - minIncl) + minIncl;
+}

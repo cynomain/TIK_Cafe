@@ -219,6 +219,7 @@ headerButtonCart.addEventListener("click", () => {
 // DEVON REINHART
 
 var Cart = {
+  TableNumber: 0,
   Items: [],
   checkForSame(menuItem, customizations) {
     let sortedCustomizations = [...customizations].sort();
@@ -239,12 +240,16 @@ var Cart = {
     if (existingItem) {
       existingItem.amount += amount;
       CartUI.updateCart();
+      LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
+
       return existingItem;
     }
 
     let newItem = new CartItem(menuItem, selectedCustomizations, amount);
     Cart.Items.push(newItem);
     CartUI.updateCart();
+    LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
+
     return newItem;
   },
 
@@ -252,6 +257,7 @@ var Cart = {
     let index = Cart.Items.findIndex(x => x.uuid == uuid);
     if (index != -1) {
       Cart.Items.splice(index, 1);
+      LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
       CartUI.updateCart();
       return true;
     }
@@ -266,7 +272,7 @@ var Cart = {
     return total;
   },
   calculateTax(price) {
-    return price * (FetchTax());
+    return price * (TAX);
   },
   calculateTotal() {
     let sub = Cart.calculateSubTotal();
@@ -278,14 +284,136 @@ var Cart = {
       count += x.amount;
     })
     return count;
+  },
+  finishPurchase() {
+    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini? Total pembayaran: " + FormatRupiah(Cart.calculateTotal()), true, null, null, () => {
+      downloadTextFile(GenerateReceipt(Cart.Items), "struk-belanja.txt");
+      Cart.Items = [];
+      LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
+      CartUI.updateCart();
+      ShowMessage("Pesanan Diterima!", "Pesanan anda akan segera diantar ke meja " + Cart.TableNumber + ".", false, null, null, null, "assets/icons/generic/check.svg");
+      CloseCartDialog();
+    }, "assets/icons/generic/question.svg")
+
+
   }
 };
+function GenerateReceipt(CartItems) {
+  function padRight(str, len) {
+    return str + " ".repeat(Math.max(0, len - str.length));
+  }
+  function padLeft(str, len) {
+    return " ".repeat(Math.max(0, len - str.length)) + str;
+  }
+
+  let nameWidth = 0, qtyWidth = 0, priceWidth = 0, totalWidth = 0;
+  CartItems.forEach((item) => {
+    nameWidth = Math.max(nameWidth, item.menuItem.name.length);
+    qtyWidth = Math.max(qtyWidth, (`x${item.amount}`).length);
+    priceWidth = Math.max(priceWidth, FormatRupiah(item.getSinglePrice()).length);
+    totalWidth = Math.max(totalWidth, FormatRupiah(item.getFinalPrice()).length);
+    item.selectedCustomizations.forEach((c) => {
+      const customization = item.menuItem.customizations.find((x) =>
+        x.choices.some((choice) => choice.id == c)
+      );
+      if (customization) {
+        const choice = customization.choices.find((choice) => choice.id == c);
+        if (choice) {
+          nameWidth = Math.max(nameWidth, 3 + choice.name.length); // for " - "
+          priceWidth = Math.max(priceWidth, FormatRupiah(choice.price).length);
+        }
+      }
+    });
+  });
+
+  // Calculate the full width for the header/footer lines
+  const col1 = nameWidth + 3; // item name
+  const col2 = qtyWidth + 2;  // quantity
+  const col3 = 2 + priceWidth; // "@ " + price
+  const totalLineWidth = col1 + col2 + col3;
+
+  let lines = [];
+  const CafeName = "Cafe Lorem Ipsum";
+  let titleEqLength = (totalLineWidth - CafeName.length - 2) / 2;
+  lines.push("=".repeat(titleEqLength) + "  " + CafeName + "  " + "=".repeat(titleEqLength));
+
+  // Add date and time below title
+  const now = new Date();
+  const dateStr = now.toLocaleDateString();
+  const timeStr = now.toLocaleTimeString();
+  const dateTimeStr = `${dateStr} ${timeStr}`;
+  lines.push(padRight(dateTimeStr, totalLineWidth));
+
+  lines.push("");
+  CartItems.forEach((item, idx) => {
+    let line =
+      padRight(`${idx + 1}. ${item.menuItem.name}`, col1) +
+      padRight(`x${item.amount}`, col2) +
+      "@ " +
+      padLeft(FormatRupiah(item.getSinglePrice()), priceWidth);
+    lines.push(line);
+    item.selectedCustomizations.forEach((c) => {
+      const customization = item.menuItem.customizations.find((x) =>
+        x.choices.some((choice) => choice.id == c)
+      );
+      if (customization) {
+        const choice = customization.choices.find((choice) => choice.id == c);
+        if (choice) {
+          lines.push(
+            padRight(`   - ${choice.name}`, col1 + col2) +
+            padLeft(FormatRupiah(choice.price), priceWidth + 2)
+          );
+        }
+      }
+    });
+    // Align "Total:" label and value with the price column
+    lines.push(
+      padRight("     Total:", col1 + col2) +
+      padLeft(FormatRupiah(item.getFinalPrice()), priceWidth + 2)
+    );
+    lines.push("");
+  });
+  let subtotal = Cart.calculateSubTotal();
+  let tax = Cart.calculateTax(subtotal);
+  let total = Cart.calculateTotal();
+  lines.push(
+    padRight("Subtotal:", col1 + col2) +
+    padLeft(FormatRupiah(subtotal), priceWidth + 2)
+  );
+  lines.push(
+    padRight(`Pajak (${(TAX * 100).toFixed(0)}%):`, col1 + col2) +
+    padLeft(FormatRupiah(tax), priceWidth + 2)
+  );
+  lines.push(
+    padRight("TOTAL:", col1 + col2) +
+    padLeft(FormatRupiah(total), priceWidth + 2)
+  );
+  lines.push("=".repeat(totalLineWidth));
+  return lines.join("\n");
+}
+
+function downloadTextFile(text, filename) {
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 0);
+}
 
 var CartUI = {
   ItemAmount: $I("cdialog-amountitems"),
   ItemsHost: $Q(".cart-items"),
   ItemElements: {},
   PriceTableController: null,
+  FinishButton: $I("cdialog-btn-buy"),
   updateItemCounters: () => {
     let amountOfItems = Cart.getAmountOfItems();
     headerCartAmountText.innerText = amountOfItems;
@@ -326,6 +454,7 @@ var CartUI = {
     }
 
     CartUI.updateTotals();
+    CartUI.FinishButton.disabled = Cart.Items.length < 1;
   },
 
 
@@ -336,7 +465,7 @@ CartUI.ItemsHost.innerText = "";
 let priceTableHost = $Q(".totals>.cart-table");
 CartUI.PriceTableController = new TableController(priceTableHost, [
   ["Subtotal", "-"],
-  ["Pajak", FetchTax() * 100 + "%"],
+  ["Pajak (" + (TAX * 100) + "%)", "-"],
   ["Total", "-", true]
 ]);
 
@@ -353,14 +482,13 @@ function GetCartItemRows(cartItem) {
     if (customization) {
       const choice = customization.choices.find((choice) => choice.id == c);
       if (choice) {
-        tableRows.push([choice.name, FormatRupiah(choice.price, 2)]);
+        tableRows.push(["- " + choice.name, FormatRupiah(choice.price)]);
       }
     }
   });
   tableRows.push([
-    cartItem.amount > 1 ? `Total (${cartItem.amount})` : "Total",
-    FormatRupiah(cartItem.getFinalPrice()),
-    true
+    cartItem.amount > 1 ? `  Total (${cartItem.amount})` : "Total",
+    FormatRupiah(cartItem.getFinalPrice())
   ])
   return tableRows;
 }
@@ -438,5 +566,13 @@ function CreateCartItemController(cartItem) {
 $I("cdialog-btn-close").addEventListener("click", () => {
   CloseCartDialog();
 });
+
+$I("cdialog-btn-buy").addEventListener("click", () => {
+  Cart.finishPurchase();
+})
+
+Cart.TableNumber = LocalSave.GetTableNumber();
+Cart.Items = LocalSave.GetCart();
+TableHeaderText.innerText = Cart.TableNumber;
 
 CartUI.updateCart();

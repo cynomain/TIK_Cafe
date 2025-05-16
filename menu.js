@@ -5,12 +5,14 @@ const tabsHost = $Q(".tabs");
 const animHost = $Q(".anim");
 const animCartImg = $I("cart-anim");
 
+const dialogTable = $I("dialog-table")
+
 const ICON_RADIO_UNCHECKED = "assets/icons/generic/radio_unchecked.svg";
 const ICON_RADIO_CHECKED = "assets/icons/generic/radio_checked.svg";
 const ICON_CHECKBOX_UNCHECKED = "assets/icons/generic/checkbox_no.svg";
 const ICON_CHECKBOX_CHECKED = "assets/icons/generic/checkbox_yes.svg";
-
 var SELECTED_TAB = "none";
+
 
 class CustomizationController {
     /**
@@ -111,6 +113,7 @@ class CustomizationController {
 let p1 = performance.now();
 
 const CategoryTabsElements = {};
+
 CATEGORIES.forEach(category => {
     CategoryTabsElements[category.id] = CreateCategoryTab(category);
 });
@@ -355,7 +358,6 @@ MenuDialogUI.quantityInput.addEventListener("input", (e) => {
     let value = parseInt(MenuDialogUI.quantityInput.value);
     if (!isNaN(value)) {
         MenuDialogData.changeQuantity(value);
-        previousValue = MenuDialogData.quantity;
     }
 
     if (MenuDialogUI.quantityInput.value === "") {
@@ -506,4 +508,37 @@ function AnimateItemToCart(iconPath) {
         animCartImg.classList.remove("animate");
         headerCartAmountText.innerText = Cart.getAmountOfItems();
     }
+}
+
+const TableDialogInput = $I("tabledialog-number");
+const TableDialogOK = $I("tabledialog-close");
+const TableHeaderButton = $I("header-btn-table");
+const TableHeaderText = $I("header-table-number");
+TableDialogInput.addEventListener("input", (e) => {
+    let value = parseInt(TableDialogInput.value);
+    if (!isNaN(value)) {
+        TableDialogInput.value = clamp(value, 1, 50);
+    } else {
+        e.preventDefault();
+    }
+    TableDialogOK.disabled = (TableDialogInput.value == null || TableDialogInput.value.length == 0)
+});
+
+function ShowTableDialog(tablenum = 0) {
+    Overlay_AllowClose = false;
+    TableDialogInput.value = tablenum > 0 ? tablenum : "";
+    TableDialogOK.disabled = (TableDialogInput.value == null || TableDialogInput.value.length == 0)
+    OpenDialog(dialogTable);
+}
+
+TableDialogOK.onclick = () => {
+    Cart.TableNumber = parseInt(TableDialogInput.value);
+    TableHeaderText.innerText = Cart.TableNumber;
+    CloseDialog(dialogTable);
+    LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
+    Overlay_AllowClose = true;
+}
+
+TableHeaderButton.onclick = () => {
+    ShowTableDialog(Cart.TableNumber);
 }

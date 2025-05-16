@@ -72,6 +72,11 @@ header {
     }
   }
 
+  .buttons {
+    flex-direction: row;
+    display: flex;
+  }
+
   .title,
   h1,
   h2,
@@ -580,11 +585,11 @@ main {
 .price {
   font-size: 1.25em;
   font-weight: bold;
-  margin: .5em;
+  margin: 0.5em;
 }
 
 #mdialog-quantity {
-  padding-top: .5em;
+  padding-top: 0.5em;
 }
 
 button {
@@ -607,12 +612,12 @@ button {
   transform-origin: center;
   will-change: transform;
 
-  &:hover {
+  &:not([disabled]):hover {
     filter: brightness(0.9);
     scale: 1.005;
   }
 
-  &:active {
+  &:not([disabled]):active {
     filter: brightness(0.8);
     scale: 0.995;
   }
@@ -651,6 +656,11 @@ button {
 
   &.no-border {
     box-shadow: none;
+  }
+
+  &[disabled]{
+    filter: grayscale() opacity(0.5);
+    cursor:not-allowed;
   }
 }
 
@@ -1068,6 +1078,19 @@ img {
   /* Firefox */
   scrollbar-width: auto;
   scrollbar-color: var(--color-primary-translucent) transparent;
+}
+
+input[type="number"] {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  text-align: center;
+  width: fit-content;
+  min-width: 0;
+  flex: 0.25;
+  border-radius: 0.75em;
 }
 
 /*
