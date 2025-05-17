@@ -305,6 +305,8 @@ main {
     pointer-events: all;
   }
 
+  will-change: backdrop-filter, transform;
+
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
@@ -361,6 +363,7 @@ main {
 
   scale: 1 1 1;
   filter: blur(0px);
+  will-change: filter, transform;
 
   backface-visibility: hidden;
   perspective: 1000;
@@ -1012,7 +1015,7 @@ select {
   opacity: 0;
 
   border-radius: 100%;
-
+  will-change: filter, transform;
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
