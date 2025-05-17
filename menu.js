@@ -132,7 +132,6 @@ for (const [key, value] of Object.entries(CategoryTabsElements)) {
     tabsHost.appendChild(value);
 }
 
-
 function UpdateTabs() {
     for (let key of Object.keys(CategoryTabsElements)) {
         if (key == SELECTED_TAB) {
@@ -147,11 +146,14 @@ function GoToTab(id) {
     if (id == SELECTED_TAB) {
         return;
     }
-    menuGrid.innerText = "";
+    //menuGrid.innerText = "";
     SELECTED_TAB = id;
+    /*
     CategoryMenuElements[id].forEach(x => {
         menuGrid.appendChild(x);
     })
+        */
+    menuGrid.replaceChildren(...CategoryMenuElements[id]);
     UpdateTabs();
 }
 
