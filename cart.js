@@ -303,7 +303,7 @@ var Cart = {
     return count;
   },
   finishPurchase() {
-    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini?\nTotal pembayaran: " + FormatRupiah(Cart.calculateTotal()) + ". \nIni akan ditambahkan ke bill anda.", true, null, null, () => {
+    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini?\nTotal pembayaran: " + FormatRupiah(Cart.calculateTotal()) + ". \nIni akan ditambahkan ke tagihan anda.", true, null, null, () => {
       downloadTextFile(GenerateReceipt(Cart.Items), `struk-belanja-${Cart.TableNumber}.txt`);
       Cart.Items = [];
       LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
@@ -369,21 +369,11 @@ function GenerateReceipt(CartItems) {
 
   lines.push("");
   CartItems.forEach((item) => {
-    // Center the datetime and table number
-    if (lines.length === 2) {
-      // Center dateTimeStr
-      lines[1] = padLeft("", Math.floor((totalLineWidth - dateTimeStr.length) / 2)) + dateTimeStr;
-    }
-    if (lines.length === 3) {
-      // Center meja
-      lines[2] = padLeft("", Math.floor((totalLineWidth - meja.length) / 2)) + meja;
-    }
-
     let line =
       padRight(`${item.menuItem.name}`, col1) +
       padRight(`x${item.amount}`, col2) +
       "@ " +
-      padLeft(FormatRupiah(item.getSinglePrice()), priceWidth);
+      padRight(FormatRupiah(item.getSinglePrice()), priceWidth);
     lines.push(line);
     item.selectedCustomizations.forEach((c) => {
       const customization = item.menuItem.customizations.find((x) =>
@@ -394,15 +384,15 @@ function GenerateReceipt(CartItems) {
         if (choice) {
           lines.push(
             padRight(`   - ${choice.name}`, col1 + col2) +
-            padLeft(FormatRupiah(choice.price), priceWidth + 2)
+            padRight(FormatRupiah(choice.price, 0), priceWidth + 2)
           );
         }
       }
     });
-    // Align "Total:" label and value with the price column
+    // Align "Total:" label and value with the price column (left-aligned)
     lines.push(
       padRight("     Total:", col1 + col2) +
-      padLeft(FormatRupiah(item.getFinalPrice()), priceWidth + 2)
+      padRight(FormatRupiah(item.getFinalPrice()), priceWidth + 2)
     );
     lines.push("");
   });
@@ -411,15 +401,15 @@ function GenerateReceipt(CartItems) {
   let total = Cart.calculateTotal();
   lines.push(
     padRight("Subtotal:", col1 + col2) +
-    padLeft(FormatRupiah(subtotal), priceWidth + 2)
+    padRight(FormatRupiah(subtotal), priceWidth + 2)
   );
   lines.push(
     padRight(`Pajak (${(TAX * 100).toFixed(0)}%):`, col1 + col2) +
-    padLeft(FormatRupiah(tax), priceWidth + 2)
+    padRight(FormatRupiah(tax), priceWidth + 2)
   );
   lines.push(
     padRight("TOTAL:", col1 + col2) +
-    padLeft(FormatRupiah(total), priceWidth + 2)
+    padRight(FormatRupiah(total), priceWidth + 2)
   );
   lines.push("=".repeat(totalLineWidth));
   let time1 = performance.now();
@@ -518,7 +508,7 @@ function GetCartItemRows(cartItem) {
     if (customization) {
       const choice = customization.choices.find((choice) => choice.id == c);
       if (choice) {
-        tableRows.push(["- " + choice.name, FormatRupiah(choice.price)]);
+        tableRows.push(["- " + choice.name, "+"+FormatRupiah(choice.price, 0)]);
       }
     }
   });

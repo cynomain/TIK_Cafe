@@ -531,7 +531,8 @@ function BuildMenuCustomization(customization) {
             p.innerText = choice.name;
 
             let price = document.createElement("p");
-            price.innerText = FormatRupiah(choice.price);
+            let prefix = choice.price >= 0 ? "+" : "";
+            price.innerText = prefix + FormatRupiah(choice.price, 0);
 
             btn.appendChild(icon);
             btn.appendChild(p);

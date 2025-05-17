@@ -531,4 +531,4 @@ const CATEGORIES = [
 ]
 
 
-const TAX = 0.12;
+const TAX = 0.11;
