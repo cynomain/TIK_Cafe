@@ -69,14 +69,16 @@ header {
 
   .icon-btn {
     img {
-      width: 2em;
-      height: 2em;
+      width: 4em;
+      height: 4em;
     }
   }
 
   .buttons {
     flex-direction: row;
     display: flex;
+    font-size: 1.2em;
+    gap: 0.5em;
   }
 
   .title,
@@ -303,10 +305,6 @@ main {
     pointer-events: all;
   }
 
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
@@ -363,10 +361,7 @@ main {
 
   scale: 1 1 1;
   filter: blur(0px);
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transform: translateZ(0);
+
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
@@ -682,6 +677,10 @@ button {
     color: var(--color-primary);
   }
 
+  &.bordered {
+    box-shadow: inset 0px 0px 0px 0.1em var(--color-tertiary);
+  }
+
   &.no-border {
     box-shadow: none;
   }
@@ -880,22 +879,20 @@ select {
   transform: translateX(0);
   opacity: 1;
   filter: blur(0px);
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transform: translateZ(0);
+
   backface-visibility: hidden;
-  perspective: 1000;
   transform: translate3d(0, 0, 0);
   transform: translateZ(0);
   margin-bottom: 0;
   box-sizing: border-box;
   &.destroyed {
-    margin-bottom: var(--anim-height);
     transform: translateX(100%);
     opacity: 0;
     filter: blur(8px);
     pointer-events: none;
+  }
+  &.collapse {
+    margin-bottom: var(--anim-height);
   }
 }
 
@@ -973,10 +970,6 @@ select {
   font-weight: bold;
   backdrop-filter: var(--blur-radius);
   box-shadow: #0000003a 0px 0px 1em;
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
@@ -1020,15 +1013,16 @@ select {
 
   border-radius: 100%;
 
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
   transform: translate3d(0, 0, 0);
   transform: translateZ(0);
-
+  mask-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
   &.animate {
     animation: curve-to-top-right 0.75s linear forwards;
   }
@@ -1040,36 +1034,38 @@ select {
     top: 50%;
     left: 50%;
     */
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate(0, 0); /*rotate(0deg);*/
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(8px);
     /*scale: 1;*/
   }
   20% {
     opacity: 1;
-    filter: blur(0px);
+    filter: blur(2px);
   }
   50% {
     /*
     top: 25%;
     left: 75%;
     */
-    transform: translate(25dvw, -25dvh) rotate(-45deg);
+    filter: blur(2px);
+
+    transform: translate(25dvw, -25dvh); /* rotate(-45deg);*/
   }
   80% {
     opacity: 1;
     /*scale: 1;*/
-    filter: blur(0px);
+    filter: blur(2px);
   }
   100% {
     /*
     top: 0%;
     left: calc(100dvw - 4em);
     */
-    transform: translate(calc(50dvw - 4em), -50dvh) rotate(-90deg);
+    transform: translate(calc(50dvw - 5em), -50dvh); /*rotate(-90deg);*/
     /*scale: 0;*/
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(8px);
   }
 }
 

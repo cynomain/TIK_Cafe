@@ -187,11 +187,16 @@ class CartItemCardController {
 
   destroyAnimation(after) {
     this.mainElement.classList.add("destroyed");
-    this.mainElement.style.setProperty("--anim-height", -this.mainElement.clientHeight + "px");
+    this.mainElement.style.setProperty("--anim-height", (-this.mainElement.clientHeight - 10) + "px");
     this.mainElement.addEventListener("transitionend", (e) => {
       //call only once
       if (e.propertyName == "transform") {
-        after();
+        this.mainElement.classList.add("collapse");
+        this.mainElement.ontransitionend = (e) => {
+          if (e.propertyName == "margin-bottom") {
+            after();
+          }
+        }
       }
     });
   }
@@ -450,9 +455,9 @@ var CartUI = {
   updateTotals: () => {
     let sub = Cart.calculateSubTotal();
     let tax = Cart.calculateTax(sub);
-    CartUI.PriceTableController.elements[0][1] = FormatRupiah(sub);
-    CartUI.PriceTableController.elements[1][1] = FormatRupiah(tax);
-    CartUI.PriceTableController.elements[2][1] = FormatRupiah(sub + tax);
+    CartUI.PriceTableController.elements[0][1] = FormatRupiah(sub, 0);
+    CartUI.PriceTableController.elements[1][1] = FormatRupiah(tax, 0);
+    CartUI.PriceTableController.elements[2][1] = FormatRupiah(sub + tax, 0);
     CartUI.PriceTableController.updateElements();
   },
   updateCart: () => {
@@ -510,7 +515,7 @@ function GetCartItemRows(cartItem) {
     if (customization) {
       const choice = customization.choices.find((choice) => choice.id == c);
       if (choice) {
-        tableRows.push(["- " + choice.name, "+"+FormatRupiah(choice.price, 0)]);
+        tableRows.push(["- " + choice.name, "+" + FormatRupiah(choice.price, 0)]);
       }
     }
   });
@@ -537,6 +542,8 @@ function CreateCartItemController(cartItem) {
 
   const img = document.createElement("img");
   img.src = cartItem.menuItem.icon_path;
+  img.width = 80;
+  img.height = 80;
   img.className = "cartmenu-image";
   vertical.appendChild(img);
 
