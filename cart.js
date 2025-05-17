@@ -187,6 +187,7 @@ class CartItemCardController {
 
   destroyAnimation(after) {
     this.mainElement.classList.add("destroyed");
+    this.mainElement.style.setProperty("--anim-height", -this.mainElement.clientHeight + "px");
     this.mainElement.addEventListener("transitionend", (e) => {
       //call only once
       if (e.propertyName == "transform") {

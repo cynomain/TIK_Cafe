@@ -302,6 +302,15 @@ main {
     opacity: 1;
     pointer-events: all;
   }
+
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
 }
 
 .dialog-card {
@@ -310,7 +319,7 @@ main {
   z-index: 901;
   background-color: var(--color-background);
   color: var(--color-primary);
-  backdrop-filter: blur(4px);
+  /*backdrop-filter: blur(4px);*/
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -353,14 +362,26 @@ main {
   }
 
   scale: 1 1 1;
+  filter: blur(0px);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+
   &.disable-anim {
     scale: 0 0 1;
+    filter: blur(32px);
   }
 
   transition: max-height 0.2s ease-in-out, max-width 0.2s ease-in-out,
     padding 0.2s ease-in-out, margin 0.2s ease-in-out,
     border-radius 0.2s ease-in-out, flex 0.2s ease-in-out,
-    width 0.2s ease-in-out, height 0.2s ease-in-out, scale 0.2s ease-in-out;
+    width 0.2s ease-in-out, height 0.2s ease-in-out, scale 0.2s ease-in-out,
+    filter 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 600px) {
@@ -855,11 +876,22 @@ select {
   }
 
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
-    filter 0.5s ease-in-out;
+    filter 0.5s ease-in-out, margin-bottom 0.5s ease-in-out;
   transform: translateX(0);
   opacity: 1;
   filter: blur(0px);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  margin-bottom: 0;
+  box-sizing: border-box;
   &.destroyed {
+    margin-bottom: var(--anim-height);
     transform: translateX(100%);
     opacity: 0;
     filter: blur(8px);
@@ -941,11 +973,20 @@ select {
   font-weight: bold;
   backdrop-filter: var(--blur-radius);
   box-shadow: #0000003a 0px 0px 1em;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
 
   opacity: 1;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
-    margin 0.5s ease-in-out;
+    margin-top 0.5s ease-in-out;
   transform: translateY(0);
+  margin-top: 0;
 
   p {
     margin: 0;
@@ -954,6 +995,7 @@ select {
   &.closed {
     transform: translateY(50dvh);
     opacity: 0;
+    margin-top: -3em;
   }
 }
 
@@ -977,6 +1019,15 @@ select {
   opacity: 0;
 
   border-radius: 100%;
+
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
 
   &.animate {
     animation: curve-to-top-right 0.75s linear forwards;
