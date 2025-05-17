@@ -58,13 +58,14 @@
       <div class="menu-grid">
         <!-- INI AKAN DIPOPULASI OLEH JS-->
         <div class="menu-grid">
-          <button class="menu-item">
+          <h1 style="text-align: center;">Loading...</h1>
+          <!--button class="menu-item">
             <img
               src="assets/menu/kopi/espresso.jpg"
               class="menu-image"
               loading="lazy"
             />
-            <h2 class="menu-name">Espresso</h2>
+            <h2 class="menu-name">Nanti</h2>
             <p class="menu-price">Rp&nbsp;15.000</p></button
           ><button class="menu-item">
             <img
@@ -72,103 +73,33 @@
               class="menu-image"
               loading="lazy"
             />
-            <h2 class="menu-name">Americano</h2>
-            <p class="menu-price">Rp&nbsp;18.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/cappuccino.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Cappuccino</h2>
-            <p class="menu-price">Rp&nbsp;25.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/latte.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Latte</h2>
-            <p class="menu-price">Rp&nbsp;25.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/mocha.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Mocha</h2>
-            <p class="menu-price">Rp&nbsp;28.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/macchiato.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Macchiato</h2>
-            <p class="menu-price">Rp&nbsp;20.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/flat_white.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Flat White</h2>
-            <p class="menu-price">Rp&nbsp;24.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/affogato.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Affogato</h2>
-            <p class="menu-price">Rp&nbsp;30.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/cold_brew.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Cold Brew</h2>
-            <p class="menu-price">Rp&nbsp;20.000</p></button
-          ><button class="menu-item">
+            <h2 class="menu-name">Akan</h2>
+            <p class="menu-price">Rp&nbsp;18.000</p>
+          </button>
+          <button class="menu-item">
             <img
               src="assets/menu/kopi/caramel_macchiato.jpg"
               class="menu-image"
               loading="lazy"
             />
-            <h2 class="menu-name">Caramel Macchiato</h2>
-            <p class="menu-price">Rp&nbsp;32.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/vanilla_latte.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Vanilla Latte</h2>
-            <p class="menu-price">Rp&nbsp;30.000</p></button
-          ><button class="menu-item">
-            <img
-              src="assets/menu/kopi/hazelnut_latte.jpg"
-              class="menu-image"
-              loading="lazy"
-            />
-            <h2 class="menu-name">Hazelnut Latte</h2>
-            <p class="menu-price">Rp&nbsp;30.000</p></button
-          ><button class="menu-item">
+            <h2 class="menu-name">Diisi</h2>
+            <p class="menu-price">Rp&nbsp;18.000</p>
+          </button>
+          <button class="menu-item">
             <img
               src="assets/menu/kopi/ballerina.png"
               class="menu-image"
               loading="lazy"
             />
-            <h2 class="menu-name">Ballerina Cappucina</h2>
-            <p class="menu-price">Rp&nbsp;2.000.000</p>
-          </button>
+            <h2 class="menu-name">Javascript</h2>
+            <p class="menu-price">Rp&nbsp;18.000</p>
+          </button-->
         </div>
       </div>
     </main>
 
     <div class="overlay">
-      <div class="dialog-card disabled" id="dialog-menuview">
+      <div class="dialog-card disabled disable-anim" id="dialog-menuview">
         <h2 class="title" id="mdialog-title">Ballerina Cappucina</h2>
         <img id="mdialog-img" src="assets/menu/kopi/ballerina.png" />
         <p class="description" id="mdialog-description">
@@ -214,7 +145,7 @@
         </div>
       </div>
 
-      <div class="dialog-card cart disabled" id="dialog-cart">
+      <div class="dialog-card cart disabled disable-anim" id="dialog-cart">
         <div class="titles">
           <h2 class="title" id="cdialog-title">Keranjang</h2>
           <h3 id="cdialog-amountitems">10 item</h3>
@@ -294,7 +225,7 @@
       </div>
 
       <div
-        class="dialog-card message top-most no-scroll disabled"
+        class="dialog-card message top-most no-scroll disabled disable-anim"
         id="dialog-message"
       >
         <img
@@ -321,7 +252,7 @@
       </div>
 
       <div
-        class="dialog-card message top-most no-scroll disabled"
+        class="dialog-card message top-most no-scroll disabled disable-anim"
         id="dialog-table"
       >
         <img
@@ -354,17 +285,17 @@
       <img
         src="assets/menu/kopi/ballerina.png"
         id="cart-anim"
-        class="cart-anim-icon "
+        class="cart-anim-icon"
       />
     </div>
     <!--DEVON REINHART-->
-    <script src="helper.js"></script>
-    <script src="data.js"></script>
-    <script src="localsave.js"></script>
-    <script src="toast.js"></script>
-    <script src="menu.js"></script>
-    <script src="cart.js"></script>
-    <script src="dialog.js"></script>
-    <script src="script.js"></script>
+    <script src="helper.js" defer></script>
+    <script src="data.js" defer></script>
+    <script src="localsave.js" defer></script>
+    <script src="dialog.js" defer></script>
+    <script src="toast.js" defer></script>
+    <script src="menu.js" defer></script>
+    <script src="cart.js" defer></script>
+    <script src="script.js" defer></script>
   </body>
 </html>

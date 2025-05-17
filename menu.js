@@ -1,11 +1,8 @@
 const menuGrid = $Q(".menu-grid");
-const overlay = $Q(".overlay");
-const dialogMenu = $I("dialog-menuview");
 const tabsHost = $Q(".tabs");
 const animHost = $Q(".anim");
 const animCartImg = $I("cart-anim");
 
-const dialogTable = $I("dialog-table")
 
 const ICON_RADIO_UNCHECKED = "assets/icons/generic/radio_unchecked.svg";
 const ICON_RADIO_CHECKED = "assets/icons/generic/radio_checked.svg";
@@ -13,6 +10,34 @@ const ICON_CHECKBOX_UNCHECKED = "assets/icons/generic/checkbox_no.svg";
 const ICON_CHECKBOX_CHECKED = "assets/icons/generic/checkbox_yes.svg";
 var SELECTED_TAB = "none";
 
+// Cache a template MenuItemCard for cloning
+var MenuItemCardTemplate = null;
+
+function makeMenuItemCardTemplate() {
+    if (MenuItemCardTemplate) return;
+    let btn = document.createElement("button");
+    btn.className = "menu-item";
+
+    let img = document.createElement("img");
+    img.className = "menu-image";
+    img.width = 160;
+    img.height = 160;
+    img.loading = "lazy";
+
+    let h2 = document.createElement("h2");
+    h2.className = "menu-name";
+
+    let p = document.createElement("p");
+    p.className = "menu-price";
+
+    btn.appendChild(img);
+    btn.appendChild(h2);
+    btn.appendChild(p);
+
+    MenuItemCardTemplate = btn;
+}
+
+makeMenuItemCardTemplate();
 
 class CustomizationController {
     /**
@@ -153,12 +178,15 @@ function GoToTab(id) {
         menuGrid.appendChild(x);
     })
         */
+
     menuGrid.replaceChildren(...CategoryMenuElements[id]);
+
     UpdateTabs();
 }
 
 
 GoToTab(CATEGORIES[0].id);
+
 
 /**
  * 
@@ -166,34 +194,36 @@ GoToTab(CATEGORIES[0].id);
  * @returns {Element} 
 */
 function CreateMenuItemCard(menuItem) {
-    let btn = document.createElement("button");
-    btn.className = "menu-item";
+    // Clone the template
+    let btn = MenuItemCardTemplate.cloneNode(true);
 
-    let img = document.createElement("img");
-    let h2 = document.createElement("h2");
-    let p = document.createElement("p");
+    let img = btn.querySelector(".menu-image");
+    let h2 = btn.querySelector(".menu-name");
+    let p = btn.querySelector(".menu-price");
 
     img.src = menuItem.icon_path;
     h2.innerText = menuItem.name;
     p.innerText = FormatRupiah(menuItem.price);
 
-    img.className = "menu-image";
-    h2.className = "menu-name";
-    p.className = "menu-price";
+    // Remove previous event listeners by replacing the node
+    let newBtn = btn.cloneNode(true);
+    let newImg = newBtn.querySelector(".menu-image");
+    let newH2 = newBtn.querySelector(".menu-name");
+    let newP = newBtn.querySelector(".menu-price");
 
-    img.loading = "lazy";
+    newImg.src = menuItem.icon_path;
+    newH2.innerText = menuItem.name;
+    newP.innerText = FormatRupiah(menuItem.price);
 
-    btn.appendChild(img);
-    btn.appendChild(h2);
-    btn.appendChild(p);
-
-    btn.onclick = () => {
+    newBtn.onclick = () => {
         SetMenuDialog(menuItem);
         OpenMenuDialog();
-    }
+    };
 
-    return btn;
+    return newBtn;
 }
+
+// DEVON REINHART
 
 /**
  * 
@@ -285,6 +315,7 @@ var MenuDialogData = {
             }, 750);
             return false;
         }
+        // DEVON REINHART
 
         let customs = [];
         MenuDialogData.customizationControllers.forEach(x => {
@@ -340,8 +371,6 @@ MenuDialogUI.btn_add2cart.addEventListener("click", (e) => {
             ci.setCustoms(customs);
         }
 
-
-
         CloseMenuDialog();
         CartUI.updateCart();
         return;
@@ -355,6 +384,7 @@ MenuDialogUI.btn_add2cart.addEventListener("click", (e) => {
 MenuDialogUI.btn_cancel.addEventListener("click", () => {
     CloseMenuDialog();
 })
+// DEVON REINHART
 
 MenuDialogUI.quantityInput.addEventListener("input", (e) => {
     let value = parseInt(MenuDialogUI.quantityInput.value);
@@ -385,6 +415,7 @@ MenuDialogUI.quantityIncrease.addEventListener("click", (e) => {
     MenuDialogData.changeQuantity(MenuDialogData.quantity + 1);
     MenuDialogUI.quantityInput.value = MenuDialogData.quantity;
 });
+// DEVON REINHART
 
 
 
@@ -428,6 +459,13 @@ function SetMenuDialog(menuItem, preSelections = [], amount = 1, action = 0, car
         MenuDialogData.customizationControllers.push(controller);
     });
 
+    if (MenuDialogData.customizations.length < 1) {
+        MenuDialogUI.customizations.classList.add("disabled");
+    } else {
+        MenuDialogUI.customizations.classList.remove("disabled");
+
+    }
+
     const PRIMARY_BUTTON_TEXTS = ["Tambah", "Ubah"];
     const PRIMRARY_BUTTON_ICONS = ["assets/icons/checkout/cart_add.svg", "assets/icons/generic/edit.svg"];
 
@@ -435,9 +473,11 @@ function SetMenuDialog(menuItem, preSelections = [], amount = 1, action = 0, car
     MenuDialogUI.primaryButtonImg.src = PRIMRARY_BUTTON_ICONS[action];
 
     setTimeout(() => {
-        dialogMenu.scrollTop = MenuDialogUI.title.offsetTop;
+        MenuDialogUI.customizations.scrollTop = MenuDialogUI.title.offsetTop;
     }, 10);
 }
+// Cache for customization picker elements by customization id
+const CustomizationPickerCache = {};
 
 /**
  * 
@@ -448,54 +488,66 @@ function BuildMenuCustomization(customization) {
 
     customizationController.Selected = Array.from({ length: customization.choices.length }, () => false);
 
-    let mainDiv = document.createElement("div");
-    mainDiv.className = "customization selection";
-
-    let instruction = "(";
-    instruction += (customization.isRequired() ? "wajib" : "opsional") + ", ";
-    instruction += "pilih ";
-    // Hanya 1
-    if (customization.isSingle()) {
-        instruction += "salah satu";
+    let mainDiv;
+    // Check cache
+    if (CustomizationPickerCache[customization.id]) {
+        mainDiv = CustomizationPickerCache[customization.id].cloneNode(true);
+        const btns = Array.from(mainDiv.querySelectorAll(".option.icon-btn-label"));
+        customizationController.Elements = btns;
+        btns.forEach((btn, index) => {
+            btn.onclick = () => customizationController.SetSelection(index);
+        });
     } else {
-        if (customization.min_choices > 0) {
-            instruction += customization.min_choices + " ";
+        mainDiv = document.createElement("div");
+        mainDiv.className = "customization selection";
+
+        let instruction = "(";
+        instruction += (customization.isRequired() ? "wajib" : "opsional") + ", ";
+        instruction += "pilih ";
+        // Hanya 1
+        if (customization.isSingle()) {
+            instruction += "salah satu";
+        } else {
+            if (customization.min_choices > 0) {
+                instruction += customization.min_choices + " ";
+            }
+            instruction += "hingga " + customization.max_choices + " pilihan";
         }
-        instruction += "hingga " + customization.max_choices + " pilihan";
-    }
-    instruction += ")";
+        instruction += ")";
 
-    let title = document.createElement("p");
-    title.innerText = customization.name + " " + instruction;
-    mainDiv.appendChild(title);
-    // DEVON REINHART
-    let selections = document.createElement("div");
-    selections.className = "selection-options";
+        let title = document.createElement("p");
+        title.innerText = customization.name + " " + instruction;
+        mainDiv.appendChild(title);
 
-    customization.choices.forEach((choice, index) => {
-        let btn = document.createElement("button");
-        btn.className = "option icon-btn-label";
-        let icon = document.createElement("img");
-        icon.src = customization.isSingle() ? ICON_RADIO_UNCHECKED : ICON_CHECKBOX_UNCHECKED;
-        let p = document.createElement("p");
-        p.innerText = choice.name;
+        let selections = document.createElement("div");
+        selections.className = "selection-options";
 
-        let price = document.createElement("p");
-        price.innerText = FormatRupiah(choice.price);
+        customization.choices.forEach((choice, index) => {
+            let btn = document.createElement("button");
+            btn.className = "option icon-btn-label";
+            let icon = document.createElement("img");
+            icon.src = customization.isSingle() ? ICON_RADIO_UNCHECKED : ICON_CHECKBOX_UNCHECKED;
+            let p = document.createElement("p");
+            p.innerText = choice.name;
 
-        btn.appendChild(icon);
-        btn.appendChild(p);
-        btn.appendChild(price);
+            let price = document.createElement("p");
+            price.innerText = FormatRupiah(choice.price);
 
-        btn.addEventListener("click", (e) => {
-            customizationController.SetSelection(index);
+            btn.appendChild(icon);
+            btn.appendChild(p);
+            btn.appendChild(price);
+
+            btn.onclick = () => customizationController.SetSelection(index);
+
+            customizationController.Elements.push(btn);
+            selections.appendChild(btn);
         });
 
-        customizationController.Elements.push(btn);
-        selections.appendChild(btn);
-    });
+        mainDiv.appendChild(selections);
+        // Cache the built element (deep clone to avoid mutation)
+        CustomizationPickerCache[customization.id] = mainDiv.cloneNode(true);
+    }
 
-    mainDiv.appendChild(selections);
     customizationController.MainElement = mainDiv;
 
     return [mainDiv, customizationController];

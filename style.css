@@ -352,10 +352,15 @@ main {
     }
   }
 
+  scale: 1 1 1;
+  &.disable-anim {
+    scale: 0 0 1;
+  }
+
   transition: max-height 0.2s ease-in-out, max-width 0.2s ease-in-out,
     padding 0.2s ease-in-out, margin 0.2s ease-in-out,
     border-radius 0.2s ease-in-out, flex 0.2s ease-in-out,
-    width 0.2s ease-in-out;
+    width 0.2s ease-in-out, height 0.2s ease-in-out, scale 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 600px) {
@@ -847,6 +852,18 @@ select {
     flex-direction: column;
     justify-content: start;
     align-items: start;
+  }
+
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
+    filter 0.5s ease-in-out;
+  transform: translateX(0);
+  opacity: 1;
+  filter: blur(0px);
+  &.destroyed {
+    transform: translateX(100%);
+    opacity: 0;
+    filter: blur(8px);
+    pointer-events: none;
   }
 }
 

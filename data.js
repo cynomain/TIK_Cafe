@@ -65,12 +65,14 @@ class Choice {
     /**
      * @param {string} name
      * @param {int} price
-    * @param {string} id 
+    *  @param {string} id 
+    *  @param {string | null} shortName
     */
-    constructor(name, price, id) {
+    constructor(name, price, id, shortName) {
         this.name = name;
         this.price = price;
         this.id = id;
+        this.shortName = shortName
     }
 
     isFree() {
@@ -107,16 +109,15 @@ class DiscountedItem {
 }
 
 // DEVON REINHART
-
 const CUSTOMIZATION_SUGAR = new Customization(
     "Gula",
     [
-        new Choice("No Sugar (0%)", 0, "sugar_0"),
-        new Choice("Slight Sugar (25%)", 0, "sugar_25"),
-        new Choice("Half Sugar (50%)", 0, "sugar_50"),
-        new Choice("Less Sugar (75%)", 0, "sugar_75"),
-        new Choice("Normal Sugar (100%)", 0, "sugar_100"),
-        new Choice("Extra Sugar (125%)", 0, "sugar_125"),
+        new Choice("No Sugar (0%)", 0, "sugar_0", "Sugar: None (0%)"),
+        new Choice("Slight Sugar (25%)", 0, "sugar_25", "Sugar: Slight (25%)"),
+        new Choice("Half Sugar (50%)", 0, "sugar_50", "Sugar: Half (50%)"),
+        new Choice("Less Sugar (75%)", 0, "sugar_75", "Sugar: Less (75%)"),
+        new Choice("Normal Sugar (100%)", 0, "sugar_100", "Sugar: Normal (100%)"),
+        new Choice("Extra Sugar (125%)", 0, "sugar_125", "Sugar: Extra (125%)"),
     ],
     "customization_sugar"
 );
@@ -124,11 +125,11 @@ const CUSTOMIZATION_SUGAR = new Customization(
 const CUSTOMIZATION_ICE = new Customization(
     "Es",
     [
-        new Choice("Hot", 0, "ice_hot"),
-        new Choice("No Ice", 0, "ice_none"),
-        new Choice("Less Ice", 0, "ice_less"),
-        new Choice("Normal Ice", 0, "ice_normal"),
-        new Choice("Extra Ice", 0, "ice_extra"),
+        new Choice("Hot", 0, "ice_hot", null),
+        new Choice("No Ice", 0, "ice_none", "Ice: None"),
+        new Choice("Less Ice", 0, "ice_less", "Ice: Less"),
+        new Choice("Normal Ice", 0, "ice_normal", "Ice: Normal"),
+        new Choice("Extra Ice", 0, "ice_extra", "Ice: Extra"),
     ],
     "customization_ice"
 );
@@ -136,9 +137,9 @@ const CUSTOMIZATION_ICE = new Customization(
 const CUSTOMIZATION_SIZE = new Customization(
     "Ukuran",
     [
-        new Choice("Small", 0, "size_small"),
-        new Choice("Medium", 0, "size_medium"),
-        new Choice("Large", 4000, "size_large"),
+        new Choice("Small", 0, "size_small", "Size: Small"),
+        new Choice("Medium", 0, "size_medium", "Size: Medium"),
+        new Choice("Large", 4000, "size_large", "Size: Large"),
     ],
     "customization_size"
 );
@@ -146,15 +147,15 @@ const CUSTOMIZATION_SIZE = new Customization(
 const CUSTOMIZATION_TOPPINGS = new Customization(
     "Topping",
     [
-        new Choice("Boba", 4000, "topping_boba"),
-        new Choice("Popping Boba", 4500, "topping_poppingboba"),
-        new Choice("Pudding", 5000, "topping_pudding"),
-        new Choice("Grass Jelly", 2000, "topping_grassjelly"),
-        new Choice("Coconut Jelly", 3000, "topping_coconutjelly"),
-        //new Choice("Red Bean", 2000, "topping_redbean"),
-        new Choice("Chia Seed", 1000, "topping_chiaseed"),
-        new Choice("Espresso Shot", 5000, "topping_espressoshot"),
-        new Choice("Ice Cream", 6000, "topping_icecream"),
+        new Choice("Boba", 4000, "topping_boba", null),
+        new Choice("Popping Boba", 4500, "topping_poppingboba", null),
+        new Choice("Pudding", 5000, "topping_pudding", null),
+        new Choice("Grass Jelly", 2000, "topping_grassjelly", null),
+        new Choice("Coconut Jelly", 3000, "topping_coconutjelly", null),
+        //new Choice("Red Bean", 2000, "topping_redbean", null),
+        new Choice("Chia Seed", 1000, "topping_chiaseed", null),
+        new Choice("Espresso Shot", 5000, "topping_espressoshot", null),
+        new Choice("Ice Cream", 6000, "topping_icecream", null),
     ],
     "customization_toppings",
     5,
@@ -164,13 +165,13 @@ const CUSTOMIZATION_TOPPINGS = new Customization(
 const CUSTOMIZATION_MILK = new Customization(
     "Susu",
     [
-        new Choice("No Milk", 0, "milk_none"),
-        new Choice("Full Cream Milk", 0, "milk_fullcream"),
-        new Choice("Low Fat Milk", 1000, "milk_lowfat"),
-        new Choice("Almond Milk", 6000, "milk_almond"),
-        new Choice("Soy Milk", 5000, "milk_soy"),
-        new Choice("Oat Milk", 5000, "milk_oat"),
-        new Choice("Creamer", 2000, "milk_creamer"),
+        new Choice("No Milk", 0, "milk_none", "Milk: None"),
+        new Choice("Full Cream Milk", 0, "milk_fullcream", "Milk: Full Cream"),
+        new Choice("Low Fat Milk", 1000, "milk_lowfat", "Milk: Low Fat"),
+        new Choice("Almond Milk", 6000, "milk_almond", "Milk: Almond"),
+        new Choice("Soy Milk", 5000, "milk_soy", "Milk: Soy"),
+        new Choice("Oat Milk", 5000, "milk_oat", "Milk: Oat"),
+        new Choice("Creamer", 2000, "milk_creamer", "Milk: Creamer"),
     ],
     "customization_milk"
 );
@@ -190,7 +191,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Americano",
             18000,
             "Espresso yang diencerkan dengan air panas untuk rasa yang lembut.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
             "assets/menu/kopi/americano.jpg",
             "coffee_americano"
         ),
@@ -198,7 +199,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Cappuccino",
             25000,
             "Espresso dengan susu kukus dan lapisan busa.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/cappuccino.jpg",
             "coffee_cappuccino"
         ),
@@ -206,7 +207,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Latte",
             25000,
             "Espresso dengan susu kukus dan busa ringan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/latte.jpg",
             "coffee_latte"
         ),
@@ -214,7 +215,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Mocha",
             28000,
             "Espresso dengan sirup cokelat dan susu kukus.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/mocha.jpg",
             "coffee_mocha"
         ),
@@ -222,7 +223,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Macchiato",
             20000,
             "Espresso dengan sedikit busa susu di atasnya.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/macchiato.jpg",
             "coffee_macchiato"
         ),
@@ -230,7 +231,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Flat White",
             24000,
             "Espresso dengan susu kukus dan tekstur lembut.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/flat_white.jpg",
             "coffee_flatwhite"
         ),
@@ -246,7 +247,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Cold Brew",
             20000,
             "Kopi dingin yang diseduh dengan rasa yang halus dan menyegarkan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_ICE, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/cold_brew.jpg",
             "coffee_coldbrew"
         ),
@@ -254,7 +255,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Caramel Macchiato",
             32000,
             "Espresso dengan sirup karamel, susu kukus, dan busa.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/caramel_macchiato.jpg",
             "coffee_caramelmacchiato"
         ),
@@ -262,7 +263,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Vanilla Latte",
             30000,
             "Espresso dengan sirup vanila dan susu kukus.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/vanilla_latte.jpg",
             "coffee_vanillalatte"
         ),
@@ -270,7 +271,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             "Hazelnut Latte",
             30000,
             "Espresso dengan sirup hazelnut dan susu kukus.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/hazelnut_latte.jpg",
             "coffee_hazelnutlatte"
         ),
@@ -287,6 +288,8 @@ const CATEGORY_COFFEE = new MenuCategory(
     "coffee"
 );
 
+//DEVON REINHART
+
 const CATEGORY_NONCOFFEE = new MenuCategory(
     "Non-Kopi",
     [
@@ -294,7 +297,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Matcha Latte",
             25000,
             "Minuman berbasis teh hijau matcha dengan susu yang lembut.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/matcha_latte.jpg",
             "noncoffee_matchalatte"
         ),
@@ -302,7 +305,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Chocolate",
             22000,
             "Minuman cokelat hangat yang manis dan lezat.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/chocolate.jpg",
             "noncoffee_chocolate"
         ),
@@ -310,7 +313,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Red Velvet Latte",
             27000,
             "Minuman dengan rasa red velvet yang creamy dan nikmat.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/red_velvet_latte.jpg",
             "noncoffee_redvelvetlatte"
         ),
@@ -318,7 +321,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Taro Latte",
             26000,
             "Minuman berbasis taro dengan rasa manis dan lembut.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/taro_latte.jpg",
             "noncoffee_tarolatte"
         ),
@@ -326,7 +329,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Thai Tea",
             20000,
             "Teh khas Thailand dengan rasa manis dan aroma rempah.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/thai_tea.jpg",
             "noncoffee_thaitea"
         ),
@@ -334,7 +337,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Milk Tea",
             22000,
             "Teh dengan campuran susu yang lembut dan manis.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/nonkopi/milk_tea.jpg",
             "noncoffee_milktea"
         ),
@@ -342,7 +345,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Lemon Tea",
             18000,
             "Teh dengan tambahan lemon segar untuk rasa yang menyegarkan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_ICE],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
             "assets/menu/nonkopi/lemon_tea.jpg",
             "noncoffee_lemontea"
         ),
@@ -350,7 +353,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Honey Lemon",
             20000,
             "Minuman campuran madu dan lemon yang sehat dan menyegarkan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_ICE],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
             "assets/menu/nonkopi/honey_lemon.jpg",
             "noncoffee_honeylemon"
         ),
@@ -358,7 +361,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Green Tea",
             19000,
             "Teh hijau dengan rasa yang ringan dan menenangkan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_ICE],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
             "assets/menu/nonkopi/green_tea.jpg",
             "noncoffee_greentea"
         ),
@@ -366,7 +369,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             "Yakult Mix",
             25000,
             "Minuman segar dengan campuran Yakult dan buah-buahan.",
-            [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_ICE],
+            [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
             "assets/menu/nonkopi/yakult_mix.jpg",
             "noncoffee_yakultmix"
         )

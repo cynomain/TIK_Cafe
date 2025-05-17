@@ -4,6 +4,8 @@ const $QA = (id) => document.querySelectorAll(id);
 const $CE = (type) => document.createElement(type);
 // DEVON REINHART
 
+const ANIMATIONS_ENABLED = true;
+
 const INTL_RUPIAH = Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -25,11 +27,13 @@ function FormatRupiah(value, zeroHandling = 1) {
         }
     }
 
-    let result = INTL_RUPIAH.format(value);
+    let result = INTL_RUPIAH.format(value).replace(/\u00a0/g, "");
 
     return result;
 }
+// DEVON REINHART
 
+const PUNYA = "DEVON";
 
 /**
  * 
@@ -59,6 +63,7 @@ function AlertElement(element, duration = -1) {
         element.classList.remove("flash-red");
     });
 }
+// DEVON REINHART
 
 /**
  * @param {String} HTML representing a single node (which might be an Element,
@@ -101,5 +106,5 @@ function clamp(value, min, max) {
 }
 
 function randomRange(minIncl, maxExcl) {
-  return Math.random() * (maxExcl - minIncl) + minIncl;
+    return Math.random() * (maxExcl - minIncl) + minIncl;
 }

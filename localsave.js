@@ -19,8 +19,28 @@ const LocalSave = {
         let array = cart ? JSON.parse(cart) : [];
         let final = [];
         array.forEach(e => {
-            final.push(Object.assign(new CartItem(), e))
+            let menuItem = null;
+            for (let i = 0; i < CATEGORIES.length; i++) {
+                let c = CATEGORIES[i];
+                let found = c.items.find(x => x.id == e.menuItem.id);
+                if (found) {
+                    menuItem = found;
+                    break;
+                }
+            }
+            if (menuItem === null) {
+                console.log("Failed to load CartItem")
+                console.log(e);
+                return;
+            }
+            let cartItem = new CartItem(
+                menuItem,
+                e.selectedCustomizations,
+                e.amount
+            )
+            final.push(cartItem)
         });
         return final;
     }
 };
+// DEVON REINHART

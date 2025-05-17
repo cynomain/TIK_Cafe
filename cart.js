@@ -1,4 +1,3 @@
-const dialogCart = $I("dialog-cart");
 const cartItemAmount = $I("cdialog-amountitems");
 const headerButtonCart = $I("header-btn-cart");
 const headerCartAmountText = $I("header-cart-amount");
@@ -168,13 +167,31 @@ class CartItemCardController {
         true,
         null,
         () => { this.cartItem.amount = 1 },
-        () => { this.removeCartItem(); Toast.showToast(`${this.cartItem.menuItem.name} dihapus dari keranjang`) }
+        () => {
+          this.destroyAnimation(
+            () => {
+              this.removeCartItem();
+              Toast.showToast(`${this.cartItem.menuItem.name} dihapus dari keranjang`);
+            }
+          )
+        }
       );
       return;
     }
     this.updateElements();
     CartUI.updateTotals();
 
+  }
+  // DEVON REINHART
+
+  destroyAnimation(after) {
+    this.mainElement.classList.add("destroyed");
+    this.mainElement.addEventListener("transitionend", (e) => {
+      //call only once
+      if (e.propertyName == "transform") {
+        after();
+      }
+    });
   }
 
   openEditMenu() {
@@ -286,8 +303,8 @@ var Cart = {
     return count;
   },
   finishPurchase() {
-    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini? Total pembayaran: " + FormatRupiah(Cart.calculateTotal()), true, null, null, () => {
-      downloadTextFile(GenerateReceipt(Cart.Items), "struk-belanja.txt");
+    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini?\nTotal pembayaran: " + FormatRupiah(Cart.calculateTotal()) + ". \nIni akan ditambahkan ke bill anda.", true, null, null, () => {
+      downloadTextFile(GenerateReceipt(Cart.Items), `struk-belanja-${Cart.TableNumber}.txt`);
       Cart.Items = [];
       LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
       CartUI.updateCart();
@@ -306,6 +323,7 @@ function GenerateReceipt(CartItems) {
     return " ".repeat(Math.max(0, len - str.length)) + str;
   }
 
+  let time0 = performance.now();
   let nameWidth = 0, qtyWidth = 0, priceWidth = 0, totalWidth = 0;
   CartItems.forEach((item) => {
     nameWidth = Math.max(nameWidth, item.menuItem.name.length);
@@ -336,18 +354,33 @@ function GenerateReceipt(CartItems) {
   const CafeName = "Cafe Lorem Ipsum";
   let titleEqLength = (totalLineWidth - CafeName.length - 2) / 2;
   lines.push("=".repeat(titleEqLength) + "  " + CafeName + "  " + "=".repeat(titleEqLength));
-
-  // Add date and time below title
   const now = new Date();
   const dateStr = now.toLocaleDateString();
   const timeStr = now.toLocaleTimeString();
   const dateTimeStr = `${dateStr} ${timeStr}`;
-  lines.push(padRight(dateTimeStr, totalLineWidth));
+  lines.push(
+    padLeft("", Math.floor((totalLineWidth - dateTimeStr.length) / 2)) + dateTimeStr
+  );
+
+  const meja = "Meja " + Cart.TableNumber;
+  lines.push(
+    padLeft("", Math.floor((totalLineWidth - meja.length) / 2)) + meja
+  );
 
   lines.push("");
-  CartItems.forEach((item, idx) => {
+  CartItems.forEach((item) => {
+    // Center the datetime and table number
+    if (lines.length === 2) {
+      // Center dateTimeStr
+      lines[1] = padLeft("", Math.floor((totalLineWidth - dateTimeStr.length) / 2)) + dateTimeStr;
+    }
+    if (lines.length === 3) {
+      // Center meja
+      lines[2] = padLeft("", Math.floor((totalLineWidth - meja.length) / 2)) + meja;
+    }
+
     let line =
-      padRight(`${idx + 1}. ${item.menuItem.name}`, col1) +
+      padRight(`${item.menuItem.name}`, col1) +
       padRight(`x${item.amount}`, col2) +
       "@ " +
       padLeft(FormatRupiah(item.getSinglePrice()), priceWidth);
@@ -389,6 +422,8 @@ function GenerateReceipt(CartItems) {
     padLeft(FormatRupiah(total), priceWidth + 2)
   );
   lines.push("=".repeat(totalLineWidth));
+  let time1 = performance.now();
+  console.log("Generate receipt took " + (time1 - time0) + " ms");
   return lines.join("\n");
 }
 
@@ -407,6 +442,7 @@ function downloadTextFile(text, filename) {
     URL.revokeObjectURL(url);
   }, 0);
 }
+// DEVON REINHART
 
 var CartUI = {
   ItemAmount: $I("cdialog-amountitems"),

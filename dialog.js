@@ -1,4 +1,8 @@
 const dialogMessage = $I("dialog-message")
+const dialogMenu = $I("dialog-menuview");
+const dialogTable = $I("dialog-table")
+const dialogCart = $I("dialog-cart");
+const overlay = $Q(".overlay");
 
 const DIALOGS = [dialogMenu, dialogCart, dialogMessage, dialogTable];
 
@@ -65,42 +69,67 @@ MessageDialog.msgBtnYes.onclick = () => {
 }
 
 function ShowMessage(title, message, btYesNo, actBtnClose = () => { }, actBtnNo = () => { }, actBtnYes = () => { }, customIcon = null) {
-  MessageDialog.msgTitle.innerText = title;
-  MessageDialog.msgMessage.innerText = message;
-  if (btYesNo) {
-    MessageDialog.msgBtnClose.classList.add("disabled");
-    MessageDialog.msgBtnNo.classList.remove("disabled");
-    MessageDialog.msgBtnYes.classList.remove("disabled");
-  } else {
-    MessageDialog.msgBtnClose.classList.remove("disabled");
-    MessageDialog.msgBtnNo.classList.add("disabled");
-    MessageDialog.msgBtnYes.classList.add("disabled");
+  function act() {
+    MessageDialog.msgTitle.innerText = title;
+    MessageDialog.msgMessage.innerText = message;
+    if (btYesNo) {
+      MessageDialog.msgBtnClose.classList.add("disabled");
+      MessageDialog.msgBtnNo.classList.remove("disabled");
+      MessageDialog.msgBtnYes.classList.remove("disabled");
+    } else {
+      MessageDialog.msgBtnClose.classList.remove("disabled");
+      MessageDialog.msgBtnNo.classList.add("disabled");
+      MessageDialog.msgBtnYes.classList.add("disabled");
+    }
+    MessageDialog.actionClose = actBtnClose ?? (() => { });
+    MessageDialog.actionNo = actBtnNo ?? (() => { });
+    MessageDialog.actionYes = actBtnYes ?? (() => { });
+    MessageDialog.msgIcon.src = customIcon ?? "assets/icons/generic/error.svg";
+    OpenDialog(dialogMessage);
   }
-  MessageDialog.actionClose = actBtnClose ?? (() => { });
-  MessageDialog.actionNo = actBtnNo ?? (() => { });
-  MessageDialog.actionYes = actBtnYes ?? (() => { });
-  MessageDialog.msgIcon.src = customIcon ?? "assets/icons/generic/error.svg";
-  OpenDialog(dialogMessage);
+
+  //wait for close animation
+  if (!dialogMessage.classList.contains("disabled")) {
+    dialogMessage.addEventListener("transitionend", (e) => {
+      if (e.propertyName == "scale") {
+        act();
+      }
+    }, {once:true})
+  } else {
+    act();
+  }
+
 }
 
+let tempTimeouts = {};
 function OpenDialog(dialogElement, modal = false) {
   activeDialogCount++;
   anyDialogActive = true;
+  dialogElement.ontransitionend = () => { };
   dialogElement.classList.remove("disabled");
+  setTimeout(() => {
+    dialogElement.classList.remove('disable-anim')
+  }, 10);
   overlay.classList.add("open");
-  document.body.classList.add("no-scroll");
+  
   if (modal) {
     dialogElement.classList.add("top-most");
   }
 }
+// DEVON REINHART
 
 function CloseDialog(dialogElement) {
   activeDialogCount--;
-  dialogElement.classList.add("disabled");
-  dialogElement.classList.remove("top-most");
+  dialogElement.classList.add('disable-anim')
+  dialogElement.ontransitionend = (e) => {
+    if (e.propertyName == "scale") {
+      dialogElement.classList.add("disabled");
+      dialogElement.classList.remove("top-most");
+    }
+  }
   if (activeDialogCount <= 0) {
     overlay.classList.remove("open");
-    document.body.classList.remove("no-scroll");
     activeDialogCount = 0;
   }
 }
+// DEVON REINHART
