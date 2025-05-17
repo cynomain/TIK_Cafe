@@ -278,7 +278,7 @@ const CATEGORY_COFFEE = new MenuCategory(
         new MenuItem(
             "Ballerina Cappucina",
             2000000,
-            ">:D",
+            "Ballerina Cappuccina, mi-mi-mi-mi. È la moglie di Cappuccino Assassino E ama la musica, la-la-la-la. La sua passione è il Ballerino Lololo.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
             "assets/menu/kopi/ballerina.png",
             "coffee_ballerinacappucina"

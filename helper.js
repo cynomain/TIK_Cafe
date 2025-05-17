@@ -19,7 +19,7 @@ function FormatRupiah(value, zeroHandling = 1) {
     if (value === 0) {
         switch (zeroHandling) {
             case 1:
-                return "GRATIS"
+                return "Gratis"
             case 2:
                 return "";
             default:

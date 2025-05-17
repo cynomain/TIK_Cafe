@@ -305,7 +305,7 @@ var MenuDialogData = {
 
         if (unfulfilledCustomization) {
             let elementToShake = unfulfilledCustomization.MainElement;
-            elementToShake.scrollIntoView({ behavior: "smooth", block: "center" });
+            elementToShake.scrollIntoView({ behavior: "smooth", block: "start" });
             Toast.showToast("Cek lagi pilihan!");
 
             setTimeout(() => {
@@ -531,8 +531,8 @@ function BuildMenuCustomization(customization) {
             p.innerText = choice.name;
 
             let price = document.createElement("p");
-            let prefix = choice.price >= 0 ? "+" : "";
-            price.innerText = prefix + FormatRupiah(choice.price, 0);
+            let prefix = choice.price > 0 ? "+" : "";
+            price.innerText = prefix + FormatRupiah(choice.price);
 
             btn.appendChild(icon);
             btn.appendChild(p);

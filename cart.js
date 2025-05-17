@@ -162,8 +162,8 @@ class CartItemCardController {
     this.cartItem.amount = clamp(this.cartItem.amount + amount, 0, 99);
     if (this.cartItem.amount < 1) {
       //Wait confirm
-      ShowMessage("Hapus " + this.cartItem.menuItem.name + "?",
-        "Apakah anda ingin menghapus item ini? Pilihan anda juga akan terhapus.",
+      ShowMessage("Hapus Pesanan",
+        `Apakah anda yakin tidak jadi memesan ${this.cartItem.menuItem.name}?`,
         true,
         null,
         () => { this.cartItem.amount = 1 },
@@ -174,7 +174,8 @@ class CartItemCardController {
               Toast.showToast(`${this.cartItem.menuItem.name} dihapus dari keranjang`);
             }
           )
-        }
+        },
+        "assets/icons/generic/delete_forever.svg"
       );
       return;
     }
@@ -303,7 +304,7 @@ var Cart = {
     return count;
   },
   finishPurchase() {
-    ShowMessage("Pesan?", "Apakah anda yakin untuk memesan menu-menu ini?\nTotal pembayaran: " + FormatRupiah(Cart.calculateTotal()) + ". \nIni akan ditambahkan ke tagihan anda.", true, null, null, () => {
+    ShowMessage("Konfirmasi Pesanan", "Apakah anda yakin untuk memesan menu-menu ini?\nTotal pembayaran: " + FormatRupiah(Cart.calculateTotal()) + ". \nIni akan ditambahkan ke tagihan anda.", true, null, null, () => {
       downloadTextFile(GenerateReceipt(Cart.Items), `struk-belanja-${Cart.TableNumber}.txt`);
       Cart.Items = [];
       LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
