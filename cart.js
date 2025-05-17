@@ -319,7 +319,7 @@ var Cart = {
       Cart.Items = [];
       LocalSave.SaveCart(Cart.Items, Cart.TableNumber);
       CartUI.updateCart();
-      ShowMessage("Pesanan Diterima!", "Pesanan anda akan segera diantar ke meja " + Cart.TableNumber + ".", false, null, null, null, "assets/icons/generic/check.svg");
+      ShowMessage("Pesanan Diterima!", "Pesanan anda akan segera diantar ke meja " + Cart.TableNumber + ".\nStruk belanja telah otomatis diunduh.", false, null, null, null, "assets/icons/generic/check.svg");
       CloseCartDialog();
     }, "assets/icons/generic/question.svg")
 
@@ -384,7 +384,7 @@ function GenerateReceipt(CartItems) {
       padRight(`${item.menuItem.name}`, col1) +
       padRight(`x${item.amount}`, col2) +
       "@ " +
-      padLeft(FormatRupiah(item.getSinglePrice()), priceWidth);
+      padLeft(FormatRupiah(item.menuItem.price), priceWidth);
     lines.push(line);
     item.selectedCustomizations.forEach((c) => {
       const customization = item.menuItem.customizations.find((x) =>
