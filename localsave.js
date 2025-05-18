@@ -12,7 +12,7 @@ const LocalSave = {
         return localStorage.getItem(LOCALSAVE_KEYS.Cart) != null;
     },
     GetTableNumber() {
-        return localStorage.getItem(LOCALSAVE_KEYS.TableNumber) ?? 0;
+        return parseInt(localStorage.getItem(LOCALSAVE_KEYS.TableNumber)) ?? 0;
     },
     GetCart() {
         const cart = localStorage.getItem(LOCALSAVE_KEYS.Cart) ?? "[]";

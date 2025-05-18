@@ -610,6 +610,16 @@ $I("cdialog-btn-buy").addEventListener("click", () => {
   Cart.finishPurchase();
 })
 
+const urlParams = new URLSearchParams(window.location.search);
+const tableParam = urlParams.get("table");
+if (tableParam && !isNaN(Number(tableParam))) {
+  const tableNum = Number(tableParam);
+  if (tableNum !== LocalSave.GetTableNumber()) {
+    console.log(tableNum + "!=" + LocalSave.GetTableNumber())
+    LocalSave.SaveCart([], clamp(tableNum, 1, 50));
+  }
+}
+
 Cart.TableNumber = LocalSave.GetTableNumber();
 Cart.Items = LocalSave.GetCart();
 TableHeaderText.innerText = Cart.TableNumber;
