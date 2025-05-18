@@ -184,7 +184,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             15000,
             "Espresso dengan rasa yang kaya dan kuat.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR],
-            "assets/menu/kopi/espresso.jpg",
+            "assets/menu/kopi/espresso.webp",
             "coffee_espresso"
         ),
         new MenuItem(
@@ -192,7 +192,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             18000,
             "Espresso yang diencerkan dengan air panas untuk rasa yang lembut.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
-            "assets/menu/kopi/americano.jpg",
+            "assets/menu/kopi/americano.webp",
             "coffee_americano"
         ),
         new MenuItem(
@@ -200,7 +200,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             25000,
             "Espresso dengan susu kukus dan lapisan busa.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/cappuccino.jpg",
+            "assets/menu/kopi/cappuccino.webp",
             "coffee_cappuccino"
         ),
         new MenuItem(
@@ -208,7 +208,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             25000,
             "Espresso dengan susu kukus dan busa ringan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/latte.jpg",
+            "assets/menu/kopi/latte.webp",
             "coffee_latte"
         ),
         new MenuItem(
@@ -216,7 +216,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             28000,
             "Espresso dengan sirup cokelat dan susu kukus.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/mocha.jpg",
+            "assets/menu/kopi/mocha.webp",
             "coffee_mocha"
         ),
         new MenuItem(
@@ -224,7 +224,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             20000,
             "Espresso dengan sedikit busa susu di atasnya.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/macchiato.jpg",
+            "assets/menu/kopi/macchiato.webp",
             "coffee_macchiato"
         ),
         new MenuItem(
@@ -232,7 +232,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             24000,
             "Espresso dengan susu kukus dan tekstur lembut.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/flat_white.jpg",
+            "assets/menu/kopi/flat_white.webp",
             "coffee_flatwhite"
         ),
         new MenuItem(
@@ -240,7 +240,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             30000,
             "Espresso yang dituangkan di atas satu scoop es krim vanila.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/affogato.jpg",
+            "assets/menu/kopi/affogato.webp",
             "coffee_affogato"
         ),
         new MenuItem(
@@ -248,7 +248,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             20000,
             "Kopi dingin yang diseduh dengan rasa yang halus dan menyegarkan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/cold_brew.jpg",
+            "assets/menu/kopi/cold_brew.webp",
             "coffee_coldbrew"
         ),
         new MenuItem(
@@ -256,7 +256,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             32000,
             "Espresso dengan sirup karamel, susu kukus, dan busa.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/caramel_macchiato.jpg",
+            "assets/menu/kopi/caramel_macchiato.webp",
             "coffee_caramelmacchiato"
         ),
         new MenuItem(
@@ -264,7 +264,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             30000,
             "Espresso dengan sirup vanila dan susu kukus.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/vanilla_latte.jpg",
+            "assets/menu/kopi/vanilla_latte.webp",
             "coffee_vanillalatte"
         ),
         new MenuItem(
@@ -272,7 +272,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             30000,
             "Espresso dengan sirup hazelnut dan susu kukus.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/hazelnut_latte.jpg",
+            "assets/menu/kopi/hazelnut_latte.webp",
             "coffee_hazelnutlatte"
         ),
         new MenuItem(
@@ -280,7 +280,7 @@ const CATEGORY_COFFEE = new MenuCategory(
             2000000,
             "Ballerina Cappuccina, mi-mi-mi-mi. È la moglie di Cappuccino Assassino E ama la musica, la-la-la-la. La sua passione è il Ballerino Lololo.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/kopi/ballerina.png",
+            "assets/menu/kopi/ballerina.webp",
             "coffee_ballerinacappucina"
         ),
     ],
@@ -298,7 +298,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             25000,
             "Minuman berbasis teh hijau matcha dengan susu yang lembut.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/matcha_latte.jpg",
+            "assets/menu/nonkopi/matcha_latte.webp",
             "noncoffee_matchalatte"
         ),
         new MenuItem(
@@ -306,7 +306,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             22000,
             "Minuman cokelat hangat yang manis dan lezat.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/chocolate.jpg",
+            "assets/menu/nonkopi/chocolate.webp",
             "noncoffee_chocolate"
         ),
         new MenuItem(
@@ -314,7 +314,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             27000,
             "Minuman dengan rasa red velvet yang creamy dan nikmat.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/red_velvet_latte.jpg",
+            "assets/menu/nonkopi/red_velvet_latte.webp",
             "noncoffee_redvelvetlatte"
         ),
         new MenuItem(
@@ -322,7 +322,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             26000,
             "Minuman berbasis taro dengan rasa manis dan lembut.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/taro_latte.jpg",
+            "assets/menu/nonkopi/taro_latte.webp",
             "noncoffee_tarolatte"
         ),
         new MenuItem(
@@ -330,7 +330,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             20000,
             "Teh khas Thailand dengan rasa manis dan aroma rempah.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/thai_tea.jpg",
+            "assets/menu/nonkopi/thai_tea.webp",
             "noncoffee_thaitea"
         ),
         new MenuItem(
@@ -338,7 +338,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             22000,
             "Teh dengan campuran susu yang lembut dan manis.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR, CUSTOMIZATION_MILK, CUSTOMIZATION_TOPPINGS],
-            "assets/menu/nonkopi/milk_tea.jpg",
+            "assets/menu/nonkopi/milk_tea.webp",
             "noncoffee_milktea"
         ),
         new MenuItem(
@@ -346,7 +346,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             18000,
             "Teh dengan tambahan lemon segar untuk rasa yang menyegarkan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
-            "assets/menu/nonkopi/lemon_tea.jpg",
+            "assets/menu/nonkopi/lemon_tea.webp",
             "noncoffee_lemontea"
         ),
         new MenuItem(
@@ -354,7 +354,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             20000,
             "Minuman campuran madu dan lemon yang sehat dan menyegarkan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
-            "assets/menu/nonkopi/honey_lemon.jpg",
+            "assets/menu/nonkopi/honey_lemon.webp",
             "noncoffee_honeylemon"
         ),
         new MenuItem(
@@ -362,7 +362,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             19000,
             "Teh hijau dengan rasa yang ringan dan menenangkan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
-            "assets/menu/nonkopi/green_tea.jpg",
+            "assets/menu/nonkopi/green_tea.webp",
             "noncoffee_greentea"
         ),
         new MenuItem(
@@ -370,7 +370,7 @@ const CATEGORY_NONCOFFEE = new MenuCategory(
             25000,
             "Minuman segar dengan campuran Yakult dan buah-buahan.",
             [CUSTOMIZATION_SIZE, CUSTOMIZATION_ICE, CUSTOMIZATION_SUGAR],
-            "assets/menu/nonkopi/yakult_mix.jpg",
+            "assets/menu/nonkopi/yakult_mix.webp",
             "noncoffee_yakultmix"
         )
     ],
@@ -386,7 +386,7 @@ const CATEGORY_FOOD = new MenuCategory(
             20000,
             "Roti croissant dengan tekstur renyah dan lembut.",
             [],
-            "assets/menu/makanan/croissant.jpg",
+            "assets/menu/makanan/croissant.webp",
             "food_croissant"
         ),
         new MenuItem(
@@ -394,7 +394,7 @@ const CATEGORY_FOOD = new MenuCategory(
             18000,
             "Muffin cokelat yang manis dan lembut.",
             [],
-            "assets/menu/makanan/chocolate_muffin.jpg",
+            "assets/menu/makanan/chocolate_muffin.webp",
             "food_chocolatemuffin"
         ),
         new MenuItem(
@@ -402,7 +402,7 @@ const CATEGORY_FOOD = new MenuCategory(
             22000,
             "Pastry dengan isian keju yang creamy.",
             [],
-            "assets/menu/makanan/cheese_danish.jpg",
+            "assets/menu/makanan/cheese_danish.webp",
             "food_cheesedanish"
         ),
         new MenuItem(
@@ -410,7 +410,7 @@ const CATEGORY_FOOD = new MenuCategory(
             25000,
             "Roti gulung dengan taburan kayu manis dan gula.",
             [],
-            "assets/menu/makanan/cinnamon_roll.jpg",
+            "assets/menu/makanan/cinnamon_roll.webp",
             "food_cinnamonroll"
         ),
         new MenuItem(
@@ -418,7 +418,7 @@ const CATEGORY_FOOD = new MenuCategory(
             20000,
             "Roti pisang yang lembut dan manis.",
             [],
-            "assets/menu/makanan/banana_bread.jpg",
+            "assets/menu/makanan/banana_bread.webp",
             "food_bananabread"
         ),
         new MenuItem(
@@ -426,7 +426,7 @@ const CATEGORY_FOOD = new MenuCategory(
             30000,
             "Pai apel dengan rasa manis dan aroma kayu manis.",
             [],
-            "assets/menu/makanan/apple_pie.jpg",
+            "assets/menu/makanan/apple_pie.webp",
             "food_applepie"
         ),
         new MenuItem(
@@ -434,7 +434,7 @@ const CATEGORY_FOOD = new MenuCategory(
             15000,
             "Scone mentega yang lembut dan gurih.",
             [],
-            "assets/menu/makanan/butter_scone.jpg",
+            "assets/menu/makanan/butter_scone.webp",
             "food_butterscone"
         ),
         new MenuItem(
@@ -442,7 +442,7 @@ const CATEGORY_FOOD = new MenuCategory(
             25000,
             "Brownie cokelat yang kaya rasa dan lembut.",
             [],
-            "assets/menu/makanan/brownie.jpg",
+            "assets/menu/makanan/brownie.webp",
             "food_brownie"
         ),
         new MenuItem(
@@ -450,7 +450,7 @@ const CATEGORY_FOOD = new MenuCategory(
             30000,
             "Kue macaron dengan berbagai rasa manis.",
             [],
-            "assets/menu/makanan/macaron.jpg",
+            "assets/menu/makanan/macaron.webp",
             "food_macaron"
         ),
         new MenuItem(
@@ -458,7 +458,7 @@ const CATEGORY_FOOD = new MenuCategory(
             35000,
             "Cheesecake lembut dengan rasa keju yang kaya.",
             [],
-            "assets/menu/makanan/cheesecake.jpg",
+            "assets/menu/makanan/cheesecake.webp",
             "food_cheesecake"
         ),
         new MenuItem(
@@ -466,7 +466,7 @@ const CATEGORY_FOOD = new MenuCategory(
             40000,
             "Dessert khas Italia dengan rasa kopi dan keju mascarpone.",
             [],
-            "assets/menu/makanan/tiramisu.jpg",
+            "assets/menu/makanan/tiramisu.webp",
             "food_tiramisu"
         ),
         new MenuItem(
@@ -474,7 +474,7 @@ const CATEGORY_FOOD = new MenuCategory(
             25000,
             "Pancake lembut dengan sirup maple dan mentega.",
             [],
-            "assets/menu/makanan/pancake.jpg",
+            "assets/menu/makanan/pancake.webp",
             "food_pancake"
         ),
         new MenuItem(
@@ -482,7 +482,7 @@ const CATEGORY_FOOD = new MenuCategory(
             27000,
             "Waffle renyah dengan topping pilihan.",
             [],
-            "assets/menu/makanan/waffle.jpg",
+            "assets/menu/makanan/waffle.webp",
             "food_waffle"
         ),
         new MenuItem(
@@ -490,7 +490,7 @@ const CATEGORY_FOOD = new MenuCategory(
             15000,
             "Donat manis dengan berbagai topping.",
             [],
-            "assets/menu/makanan/donut.jpg",
+            "assets/menu/makanan/donut.webp",
             "food_donut"
         ),
         new MenuItem(
@@ -498,7 +498,7 @@ const CATEGORY_FOOD = new MenuCategory(
             20000,
             "Pudding lembut dengan berbagai rasa pilihan.",
             [],
-            "assets/menu/makanan/pudding.jpg",
+            "assets/menu/makanan/pudding.webp",
             "food_pudding"
         ),
         new MenuItem(
@@ -506,7 +506,7 @@ const CATEGORY_FOOD = new MenuCategory(
             35000,
             "Dessert khas Perancis dengan lapisan gula karamel renyah.",
             [],
-            "assets/menu/makanan/creme_brulee.jpg",
+            "assets/menu/makanan/creme_brulee.webp",
             "food_cremebrulee"
         ),
         new MenuItem(
@@ -514,7 +514,7 @@ const CATEGORY_FOOD = new MenuCategory(
             40000,
             "Kue lembut dengan lapisan krim dan stroberi segar.",
             [],
-            "assets/menu/makanan/strawberry_shortcake.jpg",
+            "assets/menu/makanan/strawberry_shortcake.webp",
             "food_strawberryshortcake"
         ),
     ],

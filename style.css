@@ -12,7 +12,6 @@
   --color-tertiary-translucent: #d6c0b3de;
 
   --blur-radius: 16px;
-  --blur-intensity: 1;
 
   color-scheme: only light;
 }
@@ -290,7 +289,7 @@ main {
   z-index: 900;
   background-color: #49362836;
 
-  backdrop-filter: blur(calc(4px * var(--blur-intensity)));
+  backdrop-filter: blur(4px);
 
   pointer-events: none;
   opacity: 0;
@@ -373,7 +372,7 @@ main {
 
   &.disable-anim {
     scale: 0 0 1;
-    filter: blur(calc(32px*var(--blur-intensity)));
+    filter: blur(32px);
   }
 
   transition: max-height 0.2s ease-in-out, max-width 0.2s ease-in-out,
@@ -892,7 +891,7 @@ select {
   &.destroyed {
     transform: translateX(100%);
     opacity: 0;
-    filter: blur(calc(8px*var(--blur-intensity)));
+    filter: blur(8px);
     pointer-events: none;
   }
   &.collapse {

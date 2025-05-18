@@ -109,21 +109,3 @@ function randomRange(minIncl, maxExcl) {
     return Math.random() * (maxExcl - minIncl) + minIncl;
 }
 
-let slowAnimationCount = 0;
-
-function detectSlowAnimations(threshold = 200) {
-    function checkPerformance(event) {
-        const elapsed = event.elapsedTime * 1000; // ms
-        if (elapsed > threshold) {
-            slowAnimationCount++;
-            if (slowAnimationCount >= 2) {
-                document.documentElement.style.setProperty('--blur-intensity', 0);
-            }
-        }
-    }
-
-    document.addEventListener('animationend', checkPerformance, true);
-    document.addEventListener('transitionend', checkPerformance, true);
-}
-
-detectSlowAnimations();
