@@ -407,9 +407,12 @@ main {
   body {
     align-items: center;
   }
-  header > .top,
+  header > .top {
+    max-width: min(1200px, 95dvw);
+    width: 100dvw;
+  }
   header > .bottom {
-    max-width: min(1200px, 99dvw);
+    max-width: min(1200px, 97dvw);
     width: 100dvw;
   }
   header > .bottom > .tabs {
