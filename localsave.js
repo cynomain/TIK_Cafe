@@ -18,7 +18,8 @@ const LocalSave = {
         return localStorage.getItem(LOCALSAVE_KEYS.Cart) != null;
     },
     GetTableNumber() {
-        return parseInt(localStorage.getItem(LOCALSAVE_KEYS.TableNumber)) ?? 0;
+        let str = localStorage.getItem(LOCALSAVE_KEYS.TableNumber);
+        return str == null ? 0 : parseInt(str);
     },
     GetCart() {
         const cart = localStorage.getItem(LOCALSAVE_KEYS.Cart) ?? "[]";
