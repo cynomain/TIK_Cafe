@@ -409,15 +409,17 @@ main {
   }
   header > .top,
   header > .bottom {
-    max-width: min(1200px, 99dvw);
-    width: 100dvw;
+    max-width: min(1200px, 98dvw);
+    width: 100%;
+    transition: width 0.2s ease-in-out;
   }
   header > .bottom > .tabs {
-    width: 100dvw;
+    width: 100%;
     margin-left: -.5em;
   }
   .menu-grid {
-    max-width: min(1200px, 99dvw);
+    max-width: min(1200px, 100dvw);
+    transition: width 0.2s ease-in-out;
   }
   main {
     display: flex;
@@ -1062,7 +1064,7 @@ select {
     top: 50%;
     left: 50%;
     */
-    transform: translate(0, 0)rotate(0deg);
+    transform: translate(0, 0); /*rotate(0deg);*/
     opacity: 0;
     filter: blur(8px);
     /*scale: 1;*/
@@ -1078,7 +1080,7 @@ select {
     */
     filter: blur(2px);
 
-    transform: translate(calc(min(1200px, 100dvw)/3.5), -25dvh) rotate(-45deg);
+    transform: translate(25dvw, -25dvh); /* rotate(-45deg);*/
   }
   80% {
     opacity: 1;
@@ -1090,7 +1092,7 @@ select {
     top: 0%;
     left: calc(100dvw - 4em);
     */
-    transform: translate(calc(min(1200px, 100dvw)/2 - 5em), -50dvh) rotate(-90deg);
+    transform: translate(calc(min(1200px, 100dvw)/2 - 5em), -50dvh); /*rotate(-90deg);*/
     /*scale: 0;*/
     opacity: 0;
     filter: blur(8px);
