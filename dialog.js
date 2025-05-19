@@ -1,3 +1,8 @@
+/*
+    Mengontrol dialog secara umum, untuk menampilkan dan menutup, serta dialog message
+*/
+
+
 const dialogMessage = $I("dialog-message")
 const dialogMenu = $I("dialog-menuview");
 const dialogTable = $I("dialog-table")

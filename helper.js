@@ -1,3 +1,7 @@
+/*
+    Berisi fungsi-fungsi dan variabel pembantu
+*/
+
 const $I = (id) => document.getElementById(id);
 const $Q = (id) => document.querySelector(id);
 const $QA = (id) => document.querySelectorAll(id);

@@ -1,3 +1,8 @@
+/*
+    Mengendalikan halaman menu serta pemesanan menu
+*/
+
+
 const menuGrid = $Q(".menu-grid");
 const tabsHost = $Q(".tabs");
 const animHost = $Q(".anim");

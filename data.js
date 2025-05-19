@@ -1,3 +1,9 @@
+/*
+    Berisi kelas-kelas dan data menu, termasuk kategori-kategori dan item-item.
+    Ini memudahkan mengubah harga, nama, gambar, dan Kustomisasi.
+*/
+
+
 class MenuCategory {
     /**
      * @param {string} name 

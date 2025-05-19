@@ -1,3 +1,8 @@
+/*
+    Mengontrol menu keranjang dan pembayaran
+*/
+
+
 const cartItemAmount = $I("cdialog-amountitems");
 const headerButtonCart = $I("header-btn-cart");
 const headerCartAmountText = $I("header-cart-amount");
@@ -362,7 +367,7 @@ function GenerateReceipt(CartItems) {
   const totalLineWidth = col1 + col2 + col3;
 
   let lines = [];
-  const CafeName = "Cafe Cappuccino Assassino";
+  const CafeName = "Cafe Dolce";
   let titleEqLength = (totalLineWidth - CafeName.length - 2) / 2;
   lines.push("=".repeat(titleEqLength) + "  " + CafeName + "  " + "=".repeat(titleEqLength));
   const now = new Date();

@@ -1,3 +1,8 @@
+/*
+    Fungsi untuk menampilkan toast/tulisan kecil di bawah layar
+*/
+
+
 /**
  * @type Toast
  * @typedef {object}

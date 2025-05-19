@@ -1,0 +1,8 @@
+Website ini dibuat tanpa template, dengan gambar-gambar dari Pinterest. 
+Di dalam website ini, anda seolah-olah menjadi pelanggan di sebuah Cafe yang sedang memesan makanan dan minuman melalui link yang ada pada QR di meja. 
+Awalnya anda akan diminta mengisi nomor meja (jika tidak, berarti sudah otomatis diisikan oleh link "?table=<nomor>")
+Anda bisa memesan menu dengan menekan salah satu gambar menu, lalu membuat berbagai pilihan sesuai keinginan, baik itu ukuran, tingkat gula, tingkat es, dan tambahan-tambahan lainnya.
+Makanan yang dipesan akan masuk ke keranjang. Di keranjang, anda bisa mengedit menu yang sudah dipesan, menambah atau mengurangi jumlah menu, dan menghapus menu dengan mengurangi jumlahnya hingga nol.
+Jika sudah yakin, anda bisa menekan "Pesan" untuk mengakhiri transaksi anda. Pesanan akan diterima dan segera diantarkan ke meja anda. Anda juga akan disediakan struk pembelanjaan yang secara otomatis akan diunduh. 
+
+- Devon Reinhart, kelas XI 2, absen 9

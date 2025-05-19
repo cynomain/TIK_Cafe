@@ -1,3 +1,9 @@
+/*
+    Mengontrol dan menghubungkan website dengan localSave. 
+    Ini untuk menyimpan isi keranjang dan nomor meja.
+*/
+
+
 const LOCALSAVE_KEYS = {
     TableNumber: "user_table_number",
     Cart: "user_cart",
